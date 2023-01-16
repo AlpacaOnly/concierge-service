@@ -22,7 +22,7 @@ export default () => {
         </div>
 
         <div className="flex flex-col sm:justify-center sm:px-4 md:px-8">
-          <form className="max-w-[500px] w-full mx-auto bg-white px-10 sm:px-14 py-14 lg:-ml-4">
+          <form className="max-w-[500px] w-full mx-auto bg-white px-10 sm:px-14 py-14 lg:-ml-4 rounded-lg">
             <div className="mb-8 text-gray-800">
               <h2 className="text-4xl font-bold mb-3">Личный кабинет</h2>
               <p className="font-medium">
@@ -35,7 +35,7 @@ export default () => {
             <Field name="Почта" type="text" />
             <Field name="Пароль" type="password" />
             <Link
-              className="block text-center text-lg w-full my-8 py-4 bg-zinc-900 shadow-lg shadow--500/50 hover:shadow-gray-500/30 text-white font-semibold transition ease-in-out duration-250"
+              className="block rounded text-center text-lg w-full my-8 py-4 bg-zinc-900 shadow-lg shadow-500/50 hover:shadow-gray-500/30 text-white font-semibold"
               to="/panel/settings"
             >
               Войти
@@ -60,10 +60,10 @@ function Field({ name, ...props }) {
   );
 }
 
-function Input(props) {
+function Input({ className, ...props }) {
   return (
     <input
-      className="text-lg text-black bg-slate-200 mt-2 px-4 py-3 focus:bg-slate-300 bg focus:outline-none transition ease-in-out duration-150"
+      className={`text-lg text-black border-2 border-zinc-200 mt-2 px-4 py-3 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded ${className}`}
       {...props}
     />
   );
