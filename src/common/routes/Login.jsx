@@ -22,26 +22,32 @@ export default () => {
         </div>
 
         <div className="flex flex-col sm:justify-center sm:px-4 md:px-8">
-          <form className="max-w-[500px] w-full mx-auto bg-white px-10 sm:px-14 py-14 lg:-ml-4 rounded-lg">
+          <form className="max-w-[500px] w-full mx-auto bg-white px-6 sm:px-14 py-20 lg:-ml-4 rounded-lg">
             <div className="mb-8 text-gray-800">
               <h2 className="text-4xl font-bold mb-3">Личный кабинет</h2>
-              <p className="font-medium">
+              <p className="font-medium text-sm sm:text-base">
                 <span className="mr-1">Нет аккаунта?</span>
                 <Link to="#" className=" text-sky-600">
                   Создать аккаунт
                 </Link>
               </p>
             </div>
-            <Field name="Почта" type="text" />
-            <Field name="Пароль" type="password" />
+
+            <Field name="Почта">
+              <Input type="text" />
+            </Field>
+            <Field name="Пароль">
+              <Input type="password" />
+            </Field>
+
             <Link
-              className="block rounded text-center text-lg w-full my-8 py-4 bg-zinc-900 shadow-lg shadow-500/50 hover:shadow-gray-500/30 text-white font-semibold"
+              className="block rounded text-center text-lg w-full my-8 py-3 sm:py-4 bg-zinc-900 shadow-lg shadow-500/50 hover:shadow-gray-500/30 text-white font-semibold"
               to="/panel/settings"
             >
               Войти
             </Link>
 
-            <Link to="#" className="text-sky-600 font-medium block mt-12">
+            <Link to="#" className="text-sky-600 text-sm sm:text-base font-medium block mt-12">
               Восстановление аккаунта
             </Link>
           </form>
@@ -51,19 +57,21 @@ export default () => {
   );
 };
 
-function Field({ name, ...props }) {
+function Field({ tag, name, className, children }) {
+  const Wrapper = tag ?? "label";
+
   return (
-    <label className="flex flex-col text-gray-600 py-2">
+    <Wrapper className={`flex flex-col text-gray-600 py-2 ${className}`}>
       <span>{name}</span>
-      <Input {...props} />
-    </label>
+      {children}
+    </Wrapper>
   );
 }
 
 function Input({ className, ...props }) {
   return (
     <input
-      className={`text-lg text-black border-2 border-zinc-200 mt-2 px-4 py-3 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded ${className}`}
+      className={`text-base sm:text-lg text-black border-2 border-zinc-200 mt-2 px-4 py-2 sm:py-3 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded ${className}`}
       {...props}
     />
   );
