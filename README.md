@@ -29,7 +29,7 @@
 
 ### 4. Keep repeating 3rd step untill all merge conflicts resolved and when you finished just push everything to your branch
 
-# Github workrflow
+## Github workrflow
 
 ### 1. Create a new pull request
 
