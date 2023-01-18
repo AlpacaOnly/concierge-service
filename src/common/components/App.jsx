@@ -34,9 +34,6 @@ function useRolesBasedRoutes() {
     case "admin":
       return useAdminRoutes();
 
-    case "manager":
-      return useManagerRoutes();
-
     case "client":
       return useClientRoutes();
 
@@ -72,14 +69,6 @@ function useManagerRoutes() {
   return <></>;
 }
 
-function useCompanyRoutes() {
-  return <></>;
-}
-
 function usePartnerRoutes() {
   return <></>;
-}
-
-function LazyRoute(props) {
-  return <Route {...props} />;
 }
