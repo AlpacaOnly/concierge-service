@@ -63,7 +63,7 @@ export const Header = () => {
 
       <div className="flex lg:hidden xl:flex items-center max-lg:ml-auto pl-3 sm:pl-8 lg:mr-8 pr-3 sm:pr-10 lg:pr-6">
         <span className="flex flex-col text-right mr-2 sm:mr-7">
-          <span className="font-semibold lg:text-lg text-base">KazGazProm</span>
+          <span className="font-semibold lg:text-lg text-sm">KazGazProm</span>
           <span className="font-normal text-xs">Kazgazprom@email.com</span>
         </span>
         <img src="/users/1.png" alt="#" className="w-10 h-10 lg:w-14 lg:h-14 rounded-full" />
