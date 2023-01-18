@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useState } from "react";
 
 export default () => {
@@ -49,7 +50,21 @@ export default () => {
           </div>
           <Button className="mt-8 mb-4">Сохранить</Button>
         </Section>
-        <Section title="Документы">...</Section>
+
+        <Section title="Документы">
+          <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2">
+            <Field name="Паспорт" tag="div">
+              <FileInput />
+            </Field>
+            <Field name="Удостоверение" tag="div">
+              <FileInput />
+            </Field>
+            <Field name="Страховка" tag="div">
+              <FileInput />
+            </Field>
+          </div>
+          <Button className="mt-8 mb-4">Сохранить</Button>
+        </Section>
       </div>
     </div>
   );
@@ -101,5 +116,71 @@ function Button({ className, ...props }) {
     >
       {props.children}
     </button>
+  );
+}
+
+function FileInput({ className, ...props }) {
+  const target = useRef(null);
+
+  const defaultFile = props.file ?? null;
+  const [selectedFile, setSelectedFile] = useState(defaultFile);
+
+  const onFileChange = (e) => {
+    setSelectedFile(target.current.files[0]);
+  };
+
+  const onFileDelete = () => {
+    if (target) target.current.value = "";
+    setSelectedFile(null);
+  };
+
+  return (
+    <>
+      <label
+        className={`flex items-center text-base text-black whitespace-nowrap border-2 mt-2 pl-3 pr-4 py-[10px] bg-zinc-100 hover:bg-zinc-200 transition ease-in-out duration-150 rounded cursor-pointer ${
+          selectedFile === defaultFile ? "border-zinc-200" : "border-emerald-700"
+        }`}
+      >
+        <FileIcon className={`w-5 h-5 shrink-0 ${selectedFile ? "fill-black" : "fill-gray-500"}`} />
+
+        <input
+          ref={target}
+          className={`${className}`}
+          type="file"
+          onChange={onFileChange}
+          hidden
+          {...props}
+        />
+
+        <span className="ml-3 grow-[1] overflow-hidden">
+          {selectedFile ? selectedFile.name : "Не выбрано"}
+        </span>
+      </label>
+
+      {selectedFile ? (
+        <button
+          type="button"
+          className="mt-3 text-rose-700 self-start text-sm"
+          onClick={onFileDelete}
+        >
+          Удалить
+        </button>
+      ) : (
+        <span className="block h-5" />
+      )}
+    </>
+  );
+}
+
+function FileIcon(props) {
+  return (
+    <svg fill="none" viewBox="0 0 24 24" {...props}>
+      <path
+        xmlns="http://www.w3.org/2000/svg"
+        fillRule="evenodd"
+        d="M5 0a3 3 0 0 0-3 3v18a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7.81a5 5 0 0 0-1.159-3.2L18.5 1.8A5 5 0 0 0 14.66 0H5Zm1.64 15.5a.64.64 0 0 0-.64.64v.32c0 .354.287.64.64.64h10.72a.64.64 0 0 0 .64-.64v-.32a.64.64 0 0 0-.64-.64H6.64ZM6 11.64a.64.64 0 0 1 .64-.64h10.72a.64.64 0 0 1 .64.64v.32a.64.64 0 0 1-.64.64H6.64a.64.64 0 0 1-.64-.64v-.32Zm.64-5.14a.64.64 0 0 0-.64.64v.32c0 .353.287.64.64.64h7.72a.64.64 0 0 0 .64-.64v-.32a.64.64 0 0 0-.64-.64H6.64Z"
+        clipRule="evenodd"
+      />{" "}
+    </svg>
   );
 }
