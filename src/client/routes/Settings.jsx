@@ -1,6 +1,8 @@
+import { useState } from "react";
+
 export default () => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-14 xl:container xl:mx-auto px-3 py-10 sm:px-20 sm:py-16 max-sm:-mx-3 max-sm:-mt-4 rounded-xl shadow-md shadow-slate-200 bg-white">
+    <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-14 xl:container xl:mx-auto px-3 pt-10 pb-5 sm:px-20 sm:py-16 max-sm:-mx-3 max-sm:-mt-4 rounded-xl shadow-md shadow-slate-200 bg-white">
       <div>
         <Section title="Персональные данные">
           <div className="flex items-center mb-10">
@@ -12,10 +14,18 @@ export default () => {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 gap-6">
-            <Field name="Имя" type="text" value="Нуртас" />
-            <Field name="Фамилия" type="text" value="Даулетбаев" />
-            <Field name="Должность" type="text" value="HR Manager" />
-            <Field name="Название компании" type="text" value="KazGazProm" />
+            <Field name="Имя">
+              <Input type="text" defaultValue="Нуртас" />
+            </Field>
+            <Field name="Фамилия">
+              <Input type="text" defaultValue="Даулетбаев" />
+            </Field>
+            <Field name="Должность">
+              <Input type="text" defaultValue="HR Manager" />
+            </Field>
+            <Field name="Название компании">
+              <Input type="text" defaultValue="KazGazProm" />
+            </Field>
           </div>
           <Button className="mt-8 mb-4">Сохранить</Button>
         </Section>
@@ -24,10 +34,18 @@ export default () => {
       <div>
         <Section title="Контактная информация">
           <div className="grid grid-cols-2 sm:grid-cols-2 gap-6">
-            <Field name="Номер телефона" type="text" value="+7-707-787-8778" />
-            <Field name="Город" type="text" value="Алматы" />
-            <Field name="Почта" type="text" value="nurtas.dauletbaev@mail.com" />
-            <Field name="Адрес" type="text" value="Медеуский район, Пушкина 41б" />
+            <Field name="Номер телефона">
+              <Input type="text" defaultValue="+7-707-787-8778" />
+            </Field>
+            <Field name="Город">
+              <Input type="text" defaultValue="Алматы" />
+            </Field>
+            <Field name="Почта">
+              <Input type="text" defaultValue="nurtas.dauletbaev@mail.com" />
+            </Field>
+            <Field name="Адрес">
+              <Input type="text" defaultValue="Медеуский район, Пушкина 41б" />
+            </Field>
           </div>
           <Button className="mt-8 mb-4">Сохранить</Button>
         </Section>
@@ -48,19 +66,27 @@ function Section({ title, children }) {
   );
 }
 
-function Field({ name, ...props }) {
+function Field({ tag, name, className, children }) {
+  const Wrapper = tag ?? "label";
+
   return (
-    <label className="flex flex-col text-gray-600 text-sm sm:text-base py-2">
+    <Wrapper className={`flex flex-col text-gray-600 text-sm sm:text-base py-2 ${className}`}>
       <span>{name}</span>
-      <Input {...props} />
-    </label>
+      {children}
+    </Wrapper>
   );
 }
 
 function Input({ className, ...props }) {
+  const defaultValue = props.defaultValue;
+  const [currentValue, setCurrentValue] = useState(defaultValue);
+
   return (
     <input
-      className="text-base text-black border-2 border-zinc-200 mt-2 px-4 py-[10px] bg-zinc-100 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded"
+      className={`text-base text-black border-2 mt-2 px-4 py-[10px] bg-zinc-100 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded ${
+        currentValue === defaultValue ? "border-zinc-200" : "border-emerald-700"
+      }`}
+      onChange={(e) => setCurrentValue(e.target.value)}
       {...props}
     />
   );
@@ -70,7 +96,7 @@ function Button({ className, ...props }) {
   return (
     <button
       type="button"
-      className={`block rounded-full text-center text-base px-8 py-3 bg-zinc-900 text-white font-semibold ${className}`}
+      className={`block rounded-full text-center text-base px-8 py-3 bg-zinc-900 text-white font-semibold select-none ${className}`}
       {...props}
     >
       {props.children}
