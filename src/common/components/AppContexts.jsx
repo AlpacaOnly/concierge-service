@@ -1,8 +1,6 @@
 import { QueryClientProvider } from "react-query";
 import { queryClient as query } from "../services/client";
-
-import { UserContext, AuthContext } from "../services/context";
-import { useUser } from "../services/store";
+import { AuthContext } from "../services/context";
 
 export const AppServiceContexts = ({ children }) => {
   return (
@@ -13,11 +11,5 @@ export const AppServiceContexts = ({ children }) => {
 };
 
 export const AppCustomContexts = ({ children }) => {
-  const user = useUser();
-
-  return (
-    <UserContext.Provider value={user}>
-      <AuthContext>{children}</AuthContext>
-    </UserContext.Provider>
-  );
+  return <AuthContext>{children}</AuthContext>;
 };

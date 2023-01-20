@@ -1,6 +1,6 @@
 import { QueryClient } from "react-query";
 import { default as AxiosClient } from "axios";
-import { store } from "./auth";
+import { tokenService } from "./auth";
 
 export const axiosGuest = AxiosClient.create({
   baseURL: `${import.meta.env.VITE_PROXY_URL}/api`,
@@ -11,7 +11,7 @@ export const axiosUser = AxiosClient.create({
 });
 
 axiosUser.interceptors.request.use((request) => {
-  const token = store.getToken();
+  const token = tokenService.getToken();
   request.headers.Authorization = token ? `Token ${token}` : "";
   return request;
 });
@@ -20,7 +20,8 @@ axiosUser.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status !== 401) return;
-    // window.location.href = "/";
+    if (window.location.pathname === "/") return;
+    window.location.href = "/";
     return Promise.reject(error);
   }
 );
@@ -32,8 +33,8 @@ export const queryClient = new QueryClient({
       refetchOnmount: false,
       refetchOnReconnect: false,
       retry: false,
-      staleTime: 2 * 60 * 60,
-      cacheTime: 2 * 60 * 60,
+      staleTime: import.meta.env.MODE === "development" ? 0 : 2 * 60 * 60,
+      cacheTime: import.meta.env.MODE === "development" ? 0 : 2 * 60 * 60,
     },
   },
 });
