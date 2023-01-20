@@ -1,7 +1,7 @@
 import { default as React } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import loadable from "@loadable/component";
-import { UserContext } from "../services/context";
+import { useUser } from "../services/store";
 
 const LoginRoute = loadable(() => import("../routes/Login"));
 const NotFoundRoute = loadable(() => import("../routes/NotFound"));
@@ -12,8 +12,8 @@ const ClientHelpRoute = loadable(() => import("../../client/routes/Help"));
 const ClientLayout = loadable(() => import("../../client/components/Layout"));
 
 export const AppRoutes = () => {
-  const { user } = React.useContext(UserContext);
-  const role = user?.role ?? "";
+  const { data } = useUser();
+  const role = data?.role ?? "";
 
   return (
     <Routes>

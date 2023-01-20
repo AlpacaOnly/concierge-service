@@ -1,23 +1,19 @@
-import { useState, useRef, useContext } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../common/services/auth";
-import { UserContext } from "../../common/services/context";
+import { useUserLogout } from "../../common/services/store";
 
 export default () => {
   const navigate = useNavigate();
-  const user = useContext(UserContext);
+  const logout = useUserLogout();
 
-  const logout = async (e) => {
-    e.preventDefault();
-
-    try {
-      await auth.logout();
+  const logoutEvents = {
+    onClick(e) {
+      e.preventDefault();
+      logout.mutate(undefined, { onSuccess: this.onSuccess });
+    },
+    onSuccess() {
       navigate("/", { replace: true });
-    } catch (error) {
-      // TODO: handle different types of errors
-    }
-
-    user.setUser(null);
+    },
   };
 
   return (
@@ -33,7 +29,7 @@ export default () => {
 
             <button
               type="button"
-              onClick={logout}
+              onClick={logoutEvents.onClick}
               className="ml-auto bg-transparent text-sm sm:text-base text-rose-700 focus:outline-none px-3 py-3 -mr-3"
             >
               Выйти

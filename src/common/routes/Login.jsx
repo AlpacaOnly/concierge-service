@@ -1,44 +1,53 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { auth } from "../services/auth";
-import { UserContext } from "../services/context";
+import { useUserLogin } from "../services/store";
+import { useFormik } from "formik";
+import {
+  Form as BaseForm,
+  Input as BaseInput,
+  Field as BaseField,
+  FieldError as BaseFieldError,
+} from "../components/Form";
+import * as yup from "yup";
 
 export default () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [hasError, setHasError] = useState(false);
-
-  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [showInvalidError, setShowInvalidError] = useState(false);
 
   const navigate = useNavigate();
-  const user = useContext(UserContext);
+  const login = useUserLogin();
 
-  const login = async (e) => {
-    e.preventDefault();
-    let userData = null;
-
-    if (!formData.email | !formData.password) {
-      return setHasError(true);
-    }
-
-    try {
-      await auth.login(formData.email, formData.password);
-      userData = await auth.verify();
-
+  const loginEvents = {
+    onSubmit(data) {
+      login.mutate(data, { onSuccess: this.onSuccess, onError: this.onError });
+    },
+    onSuccess() {
       navigate("/panel", { replace: true });
-    } catch (error) {
-      // TODO: handle different types of errors
-
-      if (error?.response?.status !== 400) return;
-      setHasError(true);
-    }
-
-    if (!userData) return;
-    user.setUser(userData);
+    },
+    onError(e) {
+      if (e?.response?.status !== 400) return;
+      setShowInvalidError(true);
+    },
+    onChange(e) {
+      setShowInvalidError(false);
+    },
   };
+
+  const form = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: yup.object({
+      email: yup
+        .string()
+        .required("Это поле обязательное!")
+        .email("Пожалуйста, введите адрес почты"),
+      password: yup.string().required("Это поле обязательное!"),
+    }),
+    validateOnChange: false,
+    onSubmit: loginEvents.onSubmit.bind(loginEvents),
+    onChange: loginEvents.onChange.bind(loginEvents),
+  });
 
   return (
     <div className="bg-white sm:bg-zinc-900">
@@ -61,9 +70,9 @@ export default () => {
         </div>
 
         <div className="flex flex-col sm:justify-center sm:px-4 md:px-8">
-          <form
+          <BaseForm
             className="max-w-[500px] w-full mx-auto bg-white px-6 sm:px-14 py-20 lg:-ml-4 rounded-lg"
-            onSubmit={login}
+            onSubmit={form.handleSubmit}
           >
             <div className="mb-8 text-gray-800">
               <h2 className="text-4xl font-bold mb-3">Личный кабинет</h2>
@@ -75,14 +84,38 @@ export default () => {
               </p> */}
             </div>
 
-            <Field name="Почта">
-              <Input name="email" type="email" onChange={onChange} />
-            </Field>
-            <Field name="Пароль">
-              <Input name="password" type="password" onChange={onChange} />
-            </Field>
+            <CustomField title="Почта">
+              <CustomInput
+                value={form.values.email}
+                onChange={(e) => {
+                  form.handleChange(e);
+                  loginEvents.onChange(e);
+                }}
+                onBlur={form.handleBlur}
+                name="email"
+                type="text"
+              />
+              {form.touched.email && form.errors.email ? (
+                <CustomFieldError text={form.errors.email} />
+              ) : null}
+            </CustomField>
+            <CustomField title="Пароль">
+              <CustomInput
+                value={form.values.password}
+                onChange={(e) => {
+                  form.handleChange(e);
+                  loginEvents.onChange(e);
+                }}
+                onBlur={form.handleBlur}
+                name="password"
+                type="password"
+              />
+              {form.touched.password && form.errors.password ? (
+                <CustomFieldError text={form.errors.password} />
+              ) : null}
+            </CustomField>
 
-            <div className={`text-rose-700 mt-2 ${!hasError ? "hidden" : ""}`}>
+            <div className={`text-rose-700 mt-2 ${showInvalidError ? "" : "hidden"}`}>
               Неверный логин или пароль!
             </div>
 
@@ -96,27 +129,30 @@ export default () => {
             <Link to="#" className="text-sky-600 text-sm sm:text-base font-medium block mt-12">
               Восстановление аккаунта
             </Link>
-          </form>
+          </BaseForm>
         </div>
       </div>
     </div>
   );
 };
 
-function Field({ tag, name, className, children }) {
-  const Wrapper = tag ?? "label";
-
+function CustomField({ className, children, ...props }) {
   return (
-    <Wrapper className={`flex flex-col py-2 text-gray-600 ${className}`}>
-      <span>{name}</span>
+    <BaseField className={`flex flex-col py-2 text-gray-600 ${className}`} {...props}>
       {children}
-    </Wrapper>
+    </BaseField>
   );
 }
 
-function Input({ className, ...props }) {
+function CustomFieldError({ className, text }) {
   return (
-    <input
+    <BaseFieldError className={`text-base text-rose-700 mt-1 ${className}`}>{text}</BaseFieldError>
+  );
+}
+
+function CustomInput({ className, ...props }) {
+  return (
+    <BaseInput
       className={`text-base sm:text-lg text-black border-2 border-zinc-200 mt-2 px-4 py-2 sm:py-3 autofill:-bg-zinc-200 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded ${className}`}
       {...props}
     />

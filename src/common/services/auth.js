@@ -13,22 +13,22 @@ class TokenStore {
   }
 }
 
-export const store = new TokenStore();
+export const tokenService = new TokenStore();
 
 class AuthService {
-  async login(email, password) {
+  async login({ email, password }) {
     const response = await axiosGuest.post("/auth/token/login/", {
       email,
       password,
     });
 
-    store.setToken(response?.data?.auth_token);
+    tokenService.setToken(response?.data?.auth_token);
   }
 
-  async logout(email, password) {
+  async logout() {
     await axiosUser.post("/auth/token/logout/");
 
-    store.setToken(undefined);
+    tokenService.setToken("");
   }
 
   async verify() {
@@ -38,4 +38,4 @@ class AuthService {
   }
 }
 
-export const auth = new AuthService();
+export const authService = new AuthService();
