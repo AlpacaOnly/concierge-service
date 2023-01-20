@@ -1,10 +1,18 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUserLogout } from "../../common/services/store";
+import { userHooks } from "../../common/api/user";
+import { useFormik } from "formik";
+import {
+  Form as BaseForm,
+  Input as BaseInput,
+  Field as BaseField,
+  FieldError as BaseFieldError,
+} from "../../common/components/Form";
+import * as yup from "yup";
 
 export default () => {
   const navigate = useNavigate();
-  const logout = useUserLogout();
+  const logout = userHooks.useUserLogout();
 
   const logoutEvents = {
     onClick(e) {
@@ -19,7 +27,7 @@ export default () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-14 xl:container xl:mx-auto px-5 pt-10 pb-5 sm:px-20 sm:py-16 max-sm:-mx-6 max-sm:-mt-4 rounded-xl shadow-md shadow-slate-200 bg-white">
       <div>
-        <Section title="Персональные данные">
+        <CustomSection title="Персональные данные">
           <div className="flex items-center mb-10">
             <img src="/users/1.png" alt="#" className="w-12 h-12 lg:w-14 lg:h-14 rounded-full" />
             <span className="flex flex-col text-left ml-6 sm:ml-7 mr-8">
@@ -29,70 +37,72 @@ export default () => {
 
             <button
               type="button"
-              onClick={logoutEvents.onClick}
+              onClick={(e) => logoutEvents.onClick(e)}
               className="ml-auto bg-transparent text-sm sm:text-base text-rose-700 focus:outline-none px-3 py-3 -mr-3"
             >
               Выйти
             </button>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-6">
-            <Field name="Имя">
-              <Input type="text" defaultValue="Нуртас" />
-            </Field>
-            <Field name="Фамилия">
-              <Input type="text" defaultValue="Даулетбаев" />
-            </Field>
-            <Field name="Должность">
-              <Input type="text" defaultValue="HR Manager" />
-            </Field>
-            <Field name="Название компании">
-              <Input type="text" defaultValue="KazGazProm" />
-            </Field>
-          </div>
-          <Button className="mt-8 mb-4">Сохранить</Button>
-        </Section>
+          <BaseForm>
+            <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-6">
+              <CustomField title="Имя" required>
+                <CustomInput name="name" type="text" />
+              </CustomField>
+              <CustomField title="Фамилия" required>
+                <CustomInput name="surname" type="text" />
+              </CustomField>
+              <CustomField title="Должность" required>
+                <CustomInput name="job_title" type="text" />
+              </CustomField>
+              <CustomField title="Название компании" required>
+                <CustomInput name="company_name" type="text" />
+              </CustomField>
+            </div>
+            <CustomButton className="mt-8 mb-4">Сохранить</CustomButton>
+          </BaseForm>
+        </CustomSection>
       </div>
 
       <div>
-        <Section title="Контактная информация">
+        <CustomSection title="Контактная информация">
           <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-6">
-            <Field name="Номер телефона">
-              <Input type="text" defaultValue="+7-707-787-8778" />
-            </Field>
-            <Field name="Город">
-              <Input type="text" defaultValue="Алматы" />
-            </Field>
-            <Field name="Почта">
-              <Input type="text" defaultValue="nurtas.dauletbaev@mail.com" />
-            </Field>
-            <Field name="Адрес">
-              <Input type="text" defaultValue="Медеуский район, Пушкина 41б" />
-            </Field>
+            <CustomField title="Номер телефона">
+              <CustomInput type="text" defaultValue="+7-707-787-8778" />
+            </CustomField>
+            <CustomField title="Город">
+              <CustomInput type="text" defaultValue="Алматы" />
+            </CustomField>
+            <CustomField title="Почта">
+              <CustomInput type="text" defaultValue="nurtas.dauletbaev@mail.com" />
+            </CustomField>
+            <CustomField title="Адрес">
+              <CustomInput type="text" defaultValue="Медеуский район, Пушкина 41б" />
+            </CustomField>
           </div>
-          <Button className="mt-8 mb-4">Сохранить</Button>
-        </Section>
+          <CustomButton className="mt-8 mb-4">Сохранить</CustomButton>
+        </CustomSection>
 
-        <Section title="Документы">
+        <CustomSection title="Документы">
           <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2">
-            <Field name="Паспорт" tag="div">
+            <CustomField title="Паспорт" tag="div">
               <FileInput />
-            </Field>
-            <Field name="Удостоверение" tag="div">
+            </CustomField>
+            <CustomField title="Удостоверение" tag="div">
               <FileInput />
-            </Field>
-            <Field name="Страховка" tag="div">
+            </CustomField>
+            <CustomField title="Страховка" tag="div">
               <FileInput />
-            </Field>
+            </CustomField>
           </div>
-          <Button className="mt-8 mb-4">Сохранить</Button>
-        </Section>
+          <CustomButton className="mt-8 mb-4">Сохранить</CustomButton>
+        </CustomSection>
       </div>
     </div>
   );
 };
 
-function Section({ title, children }) {
+function CustomSection({ title, children }) {
   return (
     <div className="mb-8">
       <div className="uppercase text-gray-600 text-sm sm:text-base font-semibold mb-4">{title}</div>
@@ -103,23 +113,29 @@ function Section({ title, children }) {
   );
 }
 
-function Field({ tag, name, className, children }) {
-  const Wrapper = tag ?? "label";
-
+function CustomField({ className, children, ...props }) {
   return (
-    <Wrapper className={`flex flex-col text-gray-600 text-xs sm:text-base py-2 ${className}`}>
-      <span>{name}</span>
+    <BaseField
+      className={`flex flex-col text-gray-600 text-xs sm:text-base py-2  ${className}`}
+      {...props}
+    >
       {children}
-    </Wrapper>
+    </BaseField>
   );
 }
 
-function Input({ className, ...props }) {
+function CustomFieldError({ className, text }) {
+  return (
+    <BaseFieldError className={`text-base text-rose-700 mt-1 ${className}`}>{text}</BaseFieldError>
+  );
+}
+
+function CustomInput({ className, ...props }) {
   const defaultValue = props.defaultValue;
   const [currentValue, setCurrentValue] = useState(defaultValue);
 
   return (
-    <input
+    <BaseInput
       className={`text-sm sm:text-base text-black border-2 mt-2 px-3 py-[10px] bg-zinc-100 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded ${
         currentValue === defaultValue ? "border-zinc-200" : "border-emerald-700"
       }`}
@@ -129,11 +145,11 @@ function Input({ className, ...props }) {
   );
 }
 
-function Button({ className, ...props }) {
+function CustomButton({ className, type, ...props }) {
   return (
     <button
-      type="button"
       className={`block rounded-full text-center text-sm sm:text-base px-8 py-3 bg-zinc-900 text-white font-semibold select-none ${className}`}
+      type={type ?? "submit"}
       {...props}
     >
       {props.children}

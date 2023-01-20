@@ -33,10 +33,10 @@ export const Field = ({
 
   return (
     <Wrapper {...props}>
-      <span className={`block ${innerClassName} ${required ? requiredClassName : ""}`}>
+      <div className={`${innerClassName}`}>
         {title}
-        {required ? "*" : ""}
-      </span>
+        {required && <span className="text-rose-700">&nbsp;*</span>}
+      </div>
       {children}
     </Wrapper>
   );

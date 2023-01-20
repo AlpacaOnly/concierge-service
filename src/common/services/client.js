@@ -1,6 +1,6 @@
 import { QueryClient } from "react-query";
 import { default as AxiosClient } from "axios";
-import { tokenService } from "./auth";
+import { tokenService } from "./token";
 
 export const axiosGuest = AxiosClient.create({
   baseURL: `${import.meta.env.VITE_PROXY_URL}/api`,
@@ -33,8 +33,8 @@ export const queryClient = new QueryClient({
       refetchOnmount: false,
       refetchOnReconnect: false,
       retry: false,
-      staleTime: import.meta.env.MODE === "development" ? 0 : 2 * 60 * 60,
-      cacheTime: import.meta.env.MODE === "development" ? 0 : 2 * 60 * 60,
+      staleTime: 2 * 60 * 60,
+      cacheTime: 2 * 60 * 60,
     },
   },
 });

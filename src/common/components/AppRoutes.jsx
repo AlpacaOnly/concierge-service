@@ -1,7 +1,7 @@
 import { default as React } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import loadable from "@loadable/component";
-import { useUser } from "../services/store";
+import { userHooks } from "../api/user";
 
 const LoginRoute = loadable(() => import("../routes/Login"));
 const NotFoundRoute = loadable(() => import("../routes/NotFound"));
@@ -12,7 +12,7 @@ const ClientHelpRoute = loadable(() => import("../../client/routes/Help"));
 const ClientLayout = loadable(() => import("../../client/components/Layout"));
 
 export const AppRoutes = () => {
-  const { data } = useUser();
+  const { data } = userHooks.useUser();
   const role = data?.role ?? "";
 
   return (
