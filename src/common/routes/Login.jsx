@@ -1,6 +1,45 @@
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { auth } from "../services/auth";
+import { UserContext } from "../services/context";
 
 export default () => {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [hasError, setHasError] = useState(false);
+
+  const onChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const navigate = useNavigate();
+  const user = useContext(UserContext);
+
+  const login = async (e) => {
+    e.preventDefault();
+    let userData = null;
+
+    if (!formData.email | !formData.password) {
+      return setHasError(true);
+    }
+
+    try {
+      await auth.login(formData.email, formData.password);
+      userData = await auth.verify();
+
+      navigate("/panel", { replace: true });
+    } catch (error) {
+      // TODO: handle different types of errors
+
+      if (error?.response?.status !== 400) return;
+      setHasError(true);
+    }
+
+    if (!userData) return;
+    user.setUser(userData);
+  };
+
   return (
     <div className="bg-white sm:bg-zinc-900">
       <div className="grid grid-cols-1 lg:grid-cols-2 h-screen w-fill">
@@ -22,30 +61,37 @@ export default () => {
         </div>
 
         <div className="flex flex-col sm:justify-center sm:px-4 md:px-8">
-          <form className="max-w-[500px] w-full mx-auto bg-white px-6 sm:px-14 py-20 lg:-ml-4 rounded-lg">
+          <form
+            className="max-w-[500px] w-full mx-auto bg-white px-6 sm:px-14 py-20 lg:-ml-4 rounded-lg"
+            onSubmit={login}
+          >
             <div className="mb-8 text-gray-800">
               <h2 className="text-4xl font-bold mb-3">Личный кабинет</h2>
-              <p className="font-medium text-sm sm:text-base">
+              {/* <p className="font-medium text-sm sm:text-base">
                 <span className="mr-1">Нет аккаунта?</span>
                 <Link to="#" className=" text-sky-600">
                   Создать аккаунт
                 </Link>
-              </p>
+              </p> */}
             </div>
 
             <Field name="Почта">
-              <Input type="text" />
+              <Input name="email" type="email" onChange={onChange} />
             </Field>
             <Field name="Пароль">
-              <Input type="password" />
+              <Input name="password" type="password" onChange={onChange} />
             </Field>
 
-            <Link
+            <div className={`text-rose-700 mt-2 ${!hasError ? "hidden" : ""}`}>
+              Неверный логин или пароль!
+            </div>
+
+            <button
               className="block rounded text-center text-lg w-full my-8 py-3 sm:py-4 bg-zinc-900 shadow-lg shadow-500/50 hover:shadow-gray-500/30 text-white font-semibold"
-              to="/panel/settings"
+              type="submit"
             >
               Войти
-            </Link>
+            </button>
 
             <Link to="#" className="text-sky-600 text-sm sm:text-base font-medium block mt-12">
               Восстановление аккаунта
@@ -61,7 +107,7 @@ function Field({ tag, name, className, children }) {
   const Wrapper = tag ?? "label";
 
   return (
-    <Wrapper className={`flex flex-col text-gray-600 py-2 ${className}`}>
+    <Wrapper className={`flex flex-col py-2 text-gray-600 ${className}`}>
       <span>{name}</span>
       {children}
     </Wrapper>
@@ -71,7 +117,7 @@ function Field({ tag, name, className, children }) {
 function Input({ className, ...props }) {
   return (
     <input
-      className={`text-base sm:text-lg text-black border-2 border-zinc-200 mt-2 px-4 py-2 sm:py-3 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded ${className}`}
+      className={`text-base sm:text-lg text-black border-2 border-zinc-200 mt-2 px-4 py-2 sm:py-3 autofill:-bg-zinc-200 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded ${className}`}
       {...props}
     />
   );

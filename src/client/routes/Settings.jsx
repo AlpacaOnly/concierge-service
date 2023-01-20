@@ -1,17 +1,43 @@
-import { useRef } from "react";
-import { useState } from "react";
+import { useState, useRef, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../../common/services/auth";
+import { UserContext } from "../../common/services/context";
 
 export default () => {
+  const navigate = useNavigate();
+  const user = useContext(UserContext);
+
+  const logout = async (e) => {
+    e.preventDefault();
+
+    try {
+      await auth.logout();
+      navigate("/", { replace: true });
+    } catch (error) {
+      // TODO: handle different types of errors
+    }
+
+    user.setUser(null);
+  };
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-14 xl:container xl:mx-auto px-5 pt-10 pb-5 sm:px-20 sm:py-16 max-sm:-mx-6 max-sm:-mt-4 rounded-xl shadow-md shadow-slate-200 bg-white">
       <div>
         <Section title="Персональные данные">
           <div className="flex items-center mb-10">
             <img src="/users/1.png" alt="#" className="w-12 h-12 lg:w-14 lg:h-14 rounded-full" />
-            <span className="flex flex-col text-left ml-6 sm:ml-7">
+            <span className="flex flex-col text-left ml-6 sm:ml-7 mr-8">
               <span className="font-semibold text-lg sm:text-lg">KazGazProm</span>
               <span className="font-normal text-xs sm:text-sm">Kazgazprom@email.com</span>
             </span>
+
+            <button
+              type="button"
+              onClick={logout}
+              className="ml-auto bg-transparent text-sm sm:text-base text-rose-700 focus:outline-none px-3 py-3 -mr-3"
+            >
+              Выйти
+            </button>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-6">
