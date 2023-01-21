@@ -129,7 +129,7 @@ export default () => {
               <div role="status">
                 <svg
                   aria-hidden="true"
-                  class={`${
+                  className={`${
                     login.isLoading ? "" : "hidden"
                   } w-5 h-5 -ml-3 mr-3 text-gray-200 animate-spin dark:text-zinc-100 fill-zinc-500`}
                   viewBox="0 0 100 101"
