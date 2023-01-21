@@ -25,6 +25,10 @@ export const userApi = {
 
     return response?.data;
   },
+
+  async update({ id, fields }) {
+    return await axiosUser.patch(`/users/${id}/`, fields);
+  },
 };
 
 export const userHooks = {
@@ -43,6 +47,12 @@ export const userHooks = {
     return useMutation({
       mutationFn: (values) => userApi.logout(values),
       onSuccess: () => queryClient.invalidateQueries({ queryKey: ["user"] }),
+    });
+  },
+
+  useUserUpdate() {
+    return useMutation({
+      mutationFn: (values) => userApi.update(values),
     });
   },
 };
