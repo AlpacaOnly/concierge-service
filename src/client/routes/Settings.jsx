@@ -449,6 +449,7 @@ function useContactForm(props) {
     validationSchema: yup.object({
       phone: yup
         .string()
+        .matches(/^\S*$/, "Введите его без пробелов")
         .matches(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/, "Введите номер телефона"),
       email: yup.string().email("Введите адрес почты"),
     }),
