@@ -14,6 +14,7 @@ import { queryClient } from "../../common/services/client";
 export default () => {
   const navigate = useNavigate();
   const logout = userHooks.useUserLogout();
+  const user = userHooks.useUser();
 
   const logoutEvents = {
     onClick(e) {
@@ -44,8 +45,10 @@ export default () => {
           <div className="flex items-center mb-10">
             <img src="/users/1.png" alt="#" className="w-12 h-12 lg:w-14 lg:h-14 rounded-full" />
             <span className="flex flex-col text-left ml-6 sm:ml-7 mr-8">
-              <span className="font-semibold text-lg sm:text-lg">KazGazProm</span>
-              <span className="font-normal text-xs sm:text-sm">Kazgazprom@email.com</span>
+              <span className="font-semibold text-lg sm:text-lg">
+                {user?.data?.name} {user?.data?.surname}
+              </span>
+              <span className="font-normal text-xs sm:text-sm">{user?.data?.email}</span>
             </span>
 
             <button
@@ -85,7 +88,7 @@ export default () => {
                   <CustomFieldError text={personalForm.form.errors.surname} />
                 ) : null}
               </CustomField>
-              <CustomField title="Должность" required>
+              <CustomField title="Должность">
                 <CustomInput
                   value={personalForm.form.values.job_title ?? ""}
                   initialValue={personalForm.initialValues.job_title ?? ""}
@@ -403,7 +406,6 @@ function usePersonalForm(props) {
     validationSchema: yup.object({
       name: yup.string().required("Это поле обязательное!"),
       surname: yup.string().required("Это поле обязательное!"),
-      job_title: yup.string().required("Это поле обязательное!"),
       company_name: yup.string().required("Это поле обязательное!"),
     }),
     validateOnChange: false,

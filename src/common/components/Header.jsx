@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { userHooks } from "../api/user";
 
 export const Header = () => {
   const [isMenuDropdownOpened, setMenuDropdownOpened] = useState(false);
@@ -7,6 +8,8 @@ export const Header = () => {
   const onTabItemClick = () => {
     setMenuDropdownOpened(false);
   };
+
+  const user = userHooks.useUser();
 
   return (
     <div className="h-16 lg:h-20 flex lg:justify-between bg-white shadow-lg shadow-slate-200">
@@ -63,8 +66,10 @@ export const Header = () => {
 
       <div className="flex lg:hidden xl:flex items-center max-lg:ml-auto pl-3 sm:pl-8 lg:mr-8 pr-3 sm:pr-10 lg:pr-6">
         <span className="flex flex-col text-right mr-2 sm:mr-7">
-          <span className="font-semibold lg:text-lg text-sm">KazGazProm</span>
-          <span className="font-normal text-xs">Kazgazprom@email.com</span>
+          <span className="font-semibold lg:text-lg text-sm">
+            {user?.data?.name} {user?.data?.surname}
+          </span>
+          <span className="font-normal text-xs">{user?.data?.email}</span>
         </span>
         <img src="/users/1.png" alt="#" className="w-10 h-10 lg:w-14 lg:h-14 rounded-full" />
       </div>
