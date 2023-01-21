@@ -37,7 +37,7 @@ export default () => {
   cities = cities ?? [contactForm.form.values.city ?? ""];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-14 xl:container xl:mx-auto px-5 pt-10 pb-5 sm:px-20 sm:py-16 max-sm:-mx-6 max-sm:-mt-4 rounded-xl shadow-md shadow-slate-200 bg-white">
+    <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-14 xl:container xl:mx-auto px-5 pt-10 pb-5 sm:px-20 sm:py-16 max-sm:-mx-5 max-sm:-mt-4 rounded-xl shadow-md shadow-slate-200 bg-white">
       <div>
         <CustomSection title="Персональные данные">
           <div className="flex items-center mb-10">
@@ -217,7 +217,7 @@ function CustomSection({ title, children }) {
   return (
     <div className="mb-8">
       <div className="uppercase text-gray-600 text-sm sm:text-base font-semibold mb-4">{title}</div>
-      <div className="border-gray-200 border-y-2 sm:border-2 sm:rounded-xl px-5 sm:px-8 py-8 max-sm:-mx-6 ">
+      <div className="border-gray-200 border-y-2 sm:border-2 sm:rounded-xl px-5 sm:px-8 py-8 max-sm:-mx-5">
         {children}
       </div>
     </div>
