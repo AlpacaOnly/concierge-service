@@ -1,6 +1,9 @@
 import { QueryClientProvider } from "react-query";
 import { queryClient as query } from "../services/client";
-import { AuthContext } from "../services/context";
+
+import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { userHooks } from "../api/user";
 
 export const AppServiceContexts = ({ children }) => {
   return (
@@ -11,5 +14,23 @@ export const AppServiceContexts = ({ children }) => {
 };
 
 export const AppCustomContexts = ({ children }) => {
-  return <AuthContext>{children}</AuthContext>;
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isLoading, isError, data } = userHooks.useUser();
+
+  useEffect(() => {
+    if (data && !location.pathname.startsWith("/panel")) {
+      navigate("/panel", { replace: true });
+    }
+  }, [data, isLoading]);
+
+  useEffect(() => {
+    if (isError && location.pathname !== "/") {
+      navigate("/", { replace: true });
+    }
+  }, [isError, isLoading]);
+
+  if (isLoading) return <div className="px-5 sm:px-8 py-8 text-medium">Загрузка...</div>;
+
+  return <>{children}</>;
 };
