@@ -19,10 +19,11 @@ axiosUser.interceptors.request.use((request) => {
 axiosUser.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status !== 401) return;
-    if (window.location.pathname === "/") return;
+    error = Promise.reject(error);
+    if (error.response?.status !== 401) return error;
+    if (window.location.pathname === "/") return error;
     window.location.href = "/";
-    return Promise.reject(error);
+    return error;
   }
 );
 
