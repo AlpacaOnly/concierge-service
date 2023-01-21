@@ -500,7 +500,7 @@ function useFormTools(props) {
           fields: data,
         },
         {
-          onSuccess: this.onSuccess.apply(this, [data]),
+          onSuccess: this.onSuccess.bind(this, data),
           onError: this.onError,
           onSettled: this.onAnyResult,
         }
