@@ -16,9 +16,14 @@ export const AppServiceContexts = ({ children }) => {
 export const AppCustomContexts = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLoading, isError, data } = userHooks.useUser();
+  const user = userHooks.useUser();
+  const { isLoading, isError, data } = userHooks.useUserVerify();
 
   useEffect(() => {
+    if (data) {
+      user.set(data);
+    }
+
     if (data && !location.pathname.startsWith("/panel")) {
       navigate("/panel", { replace: true });
     }

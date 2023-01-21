@@ -26,12 +26,6 @@ export default () => {
     },
   };
 
-  useEffect(() => {
-    return () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
-    };
-  }, []);
-
   const personalButton = useFormButton();
   const personalForm = usePersonalForm(personalButton.events);
 
@@ -46,9 +40,9 @@ export default () => {
             <img src="/users/1.png" alt="#" className="w-12 h-12 lg:w-14 lg:h-14 rounded-full" />
             <span className="flex flex-col text-left ml-6 sm:ml-7 mr-8">
               <span className="font-semibold text-lg sm:text-lg">
-                {user?.data?.name} {user?.data?.surname}
+                {user.get()?.name} {user.get()?.surname}
               </span>
-              <span className="font-normal text-xs sm:text-sm">{user?.data?.email}</span>
+              <span className="font-normal text-xs sm:text-sm">{user.get()?.email}</span>
             </span>
 
             <button
@@ -378,10 +372,10 @@ function usePersonalForm(props) {
   const user = userHooks.useUser();
 
   const [initialValues, setinitialValues] = useState({
-    name: user?.data?.name ?? "",
-    surname: user?.data?.surname ?? "",
-    job_title: user?.data?.job_title ?? "",
-    company_name: user?.data?.company_name ?? "",
+    name: user.get()?.name ?? "",
+    surname: user.get()?.surname ?? "",
+    job_title: user.get()?.job_title ?? "",
+    company_name: user.get()?.company_name ?? "",
   });
 
   const propsOnSuccess = props.onSuccess;
@@ -423,10 +417,10 @@ function useContactForm(props) {
   const user = userHooks.useUser();
 
   const [initialValues, setinitialValues] = useState({
-    phone: user?.data?.phone ?? "",
-    city: user?.data?.city ?? "",
-    email: user?.data?.email ?? "",
-    address: user?.data?.address ?? "",
+    phone: user.get()?.phone ?? "",
+    city: user.get()?.city ?? "",
+    email: user.get()?.email ?? "",
+    address: user.get()?.address ?? "",
   });
 
   const propsOnSuccess = props.onSuccess;
@@ -484,7 +478,7 @@ function useFormTools(props) {
 
       return Object.keys(data).reduce((_data, key) => {
         if (form[key] === "") form[key] = null;
-        if (form[key] !== user?.data?.[key]) _data[key] = form[key];
+        if (form[key] !== user.get()?.[key]) _data[key] = form[key];
         return _data;
       }, {});
     },
@@ -502,18 +496,22 @@ function useFormTools(props) {
 
       update.mutate(
         {
-          id: user?.data?.id,
+          id: user.get()?.id,
           fields: data,
         },
         {
-          onSuccess: this.onSuccess,
+          onSuccess: this.onSuccess.apply(this, [data]),
           onError: this.onError,
           onSettled: this.onAnyResult,
         }
       );
     },
-    onSuccess() {
+    onSuccess(data) {
       props.onSuccess();
+      user.set({
+        ...user.get(),
+        ...data,
+      });
     },
     onError(e) {
       props.onError(e);
