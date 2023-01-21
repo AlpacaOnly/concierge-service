@@ -28,8 +28,8 @@ export const userApi = {
     return response?.data;
   },
 
-  async update({ id, fields }) {
-    return await axiosUser.patch(`/users/${id}/`, fields);
+  async update(data) {
+    return await axiosUser.patch(`/users/me/`, data);
   },
 };
 
