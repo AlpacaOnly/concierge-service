@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { userHooks } from "../../common/api/user";
 import { useFormik } from "formik";
+import { userHooks } from "../../common/api/user";
+import { citiesHooks } from "../../common/api/cities";
 import {
   Form as BaseForm,
   Input as BaseInput,
@@ -9,7 +10,6 @@ import {
   FieldError as BaseFieldError,
 } from "../../common/components/Form";
 import * as yup from "yup";
-import { queryClient } from "../../common/services/client";
 
 export default () => {
   const navigate = useNavigate();
@@ -31,6 +31,10 @@ export default () => {
 
   const contactButton = useFormButton();
   const contactForm = useContactForm(contactButton.events);
+
+  let cities = citiesHooks.useCities();
+  cities = cities?.data?.map((value) => value.name);
+  cities = cities ?? [contactForm.form.values.city ?? ""];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-14 xl:container xl:mx-auto px-5 pt-10 pb-5 sm:px-20 sm:py-16 max-sm:-mx-6 max-sm:-mt-4 rounded-xl shadow-md shadow-slate-200 bg-white">
@@ -140,13 +144,12 @@ export default () => {
                 ) : null}
               </CustomField>
               <CustomField title="Город">
-                <CustomInput
+                <CustomSelect
                   value={contactForm.form.values.city ?? ""}
-                  initialValue={contactForm.initialValues.city ?? ""}
                   onChange={contactForm.form.handleChange}
                   onBlur={contactForm.form.handleBlur}
                   name="city"
-                  type="text"
+                  options={cities}
                 />
                 {contactForm.form.touched.city && contactForm.form.errors.city ? (
                   <CustomFieldError text={contactForm.form.errors.city} />
@@ -247,6 +250,40 @@ function CustomInput({ className, initialValue, onChange, ...props }) {
       onChange={onChange ?? (() => null)}
       {...props}
     />
+  );
+}
+
+function CustomSelect({ className, options, onFocus, ...props }) {
+  return (
+    <label className="mt-2 w-full text-zinc-200">
+      <div className="relative">
+        <select
+          onFocus={() => setState("focused")}
+          onBlur={() => setState("default")}
+          className="text-sm sm:text-base text-black border-2 px-4 py-[10px] bg-zinc-100 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded  w-full appearance-none"
+          {...props}
+        >
+          <option value="Не выбрано" disabled hidden>
+            Не выбрано
+          </option>
+
+          {options.map((value, index) => (
+            <option value={value} key={index}>
+              {value}
+            </option>
+          ))}
+        </select>
+
+        <div className="absolute top-2 bottom-2 right-1 flex justify-center items-center w-10 mt-2 transition ease-in-out duration-150 pointer-events-none">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              fill="#000"
+              d="M9.244 10.977 5.177 6.911a.84.84 0 0 0-1.183 0 .83.83 0 0 0 0 1.175l5.491 5.491a.83.83 0 0 0 1.175 0l5.492-5.491a.83.83 0 1 0-1.175-1.175l-4.067 4.133-.833.696-.833-.763Z"
+            />
+          </svg>
+        </div>
+      </div>
+    </label>
   );
 }
 
@@ -494,17 +531,11 @@ function useFormTools(props) {
       setLoading(true);
       props.onLoading();
 
-      update.mutate(
-        {
-          id: user.get()?.id,
-          fields: data,
-        },
-        {
-          onSuccess: this.onSuccess.bind(this, data),
-          onError: this.onError,
-          onSettled: this.onAnyResult,
-        }
-      );
+      update.mutate(data, {
+        onSuccess: this.onSuccess.bind(this, data),
+        onError: this.onError,
+        onSettled: this.onAnyResult,
+      });
     },
     onSuccess(data) {
       props.onSuccess();
