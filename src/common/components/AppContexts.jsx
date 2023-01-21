@@ -30,7 +30,7 @@ export const AppCustomContexts = ({ children }) => {
   }, [data, isLoading]);
 
   useEffect(() => {
-    if (isError && location.pathname !== "/") {
+    if (isError && location.pathname.startsWith("/panel")) {
       navigate("/", { replace: true });
     }
   }, [isError, isLoading]);
