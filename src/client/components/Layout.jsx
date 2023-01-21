@@ -7,7 +7,7 @@ export default () => {
       <div className="bg-slate-200 min-h-screen">
         <Header />
 
-        <div className="py-10 px-5 sm:px-10">
+        <div className="py-10 px-6 sm:px-10">
           <Outlet />
         </div>
       </div>
