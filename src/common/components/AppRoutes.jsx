@@ -12,8 +12,8 @@ const ClientHelpRoute = loadable(() => import("../../client/routes/Help"));
 const ClientLayout = loadable(() => import("../../client/components/Layout"));
 
 export const AppRoutes = () => {
-  const { data } = userHooks.useUser();
-  const role = data?.role ?? "";
+  const user = userHooks.useUser();
+  const role = user.get()?.role ?? "";
 
   return (
     <Routes>

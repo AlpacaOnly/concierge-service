@@ -4,6 +4,8 @@ import { tokenService } from "../services/token";
 import { useQuery, useMutation } from "react-query";
 import { queryClient } from "../services/client";
 
+import { hookstate, useHookstate } from "@hookstate/core";
+
 export const userApi = {
   async login({ email, password }) {
     const response = await axiosGuest.post("/auth/token/login/", {
@@ -31,8 +33,14 @@ export const userApi = {
   },
 };
 
+const userState = hookstate(null);
+
 export const userHooks = {
   useUser() {
+    return useHookstate(userState);
+  },
+
+  useUserVerify() {
     return useQuery({ queryKey: ["user"], queryFn: userApi.verify });
   },
 
