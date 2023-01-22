@@ -22,27 +22,26 @@ export default () => {
             icon='Uncompleted'
             link='/chats/uncompleted'
             />
-
           <StatusItem
             text='Архив'
             icon='Archive'
             link='/chats/archive'
             />
           </ul>
-
         </div>
 
         <div className="hidden lg:flex md:block flex-row justify-between lg:w-4/5 md:w-4/5 sm:w-4/5 xs:w-4/5 bg-white shadow-md rounded-xl mr-4 p-2">
           <div className="flex flex-col gap-2">
             <SearchForm />
-            <ChatItem/> 
-            <ChatItem/> 
-            <ChatItem/> 
+            <ChatItem name="Али Менеджер" previewMessage="Количество машин?" count="3"/> 
+            <ChatItem name="Анна Менеджер" previewMessage="Закрывающий документ готов" count="1"/> 
+            <ChatItem name="Макс Менеджер" previewMessage="Эконом или Бизнес?" count="2"/> 
           </div>
-          <div className="text-[14px] hidden lg:block md:block lg:h-full lg:w-3/4 md:w-3/4 sm:w-3/4 xs:w-3/4 rounded-xl bg-[#E8ECF5]"> 
+          <div className="justify-between flex-col text-[14px] hidden lg:flex md:flex lg:h-full lg:w-3/4 md:w-3/4 sm:w-3/4 xs:w-3/4 ml-4 rounded-xl bg-[#E8ECF5]"> 
             <ChatHeader/>
             <MessageItem text="Столяру Джузеппе попалось под руку полено, которое пищало человеческим голосом."/>
             {/* <MessageItem text="Давным-давно в городке на берегу Средиземного моря жил старый столяр Джузеппе, по прозванию Сизый Нос. Однажды ему попалось под руку полено, обыкновенное полено для топки очага в зимнее время."/> */}
+            <MessageInput/>
           </div>
         </div>
            
@@ -74,24 +73,46 @@ function StatusItem (props) {
   );
 }
 
-function ChatItem() {
+function ChatItem({name, previewMessage, count}) {
   return (
     <>
-    <div className="flex justify-between flex-row w-full bg-[#1C274C]/[.06] h-14 rounded-xl">
+    <div className="flex justify-between flex-row w-full bg-[#1C274C]/[.06] h-fit rounded-xl">
       <img className="m-1.5 object-cover h-10 lg:w-1/5 md:w-10 rounded-full" src="https://picsum.photos/200/300?random=1"></img>
-      <div className="flex justify-between w-full"> {/*из-за w-full картинка сжалась*/}
+      <div className="flex justify-between w-full"> 
           <div className="flex flex-col text-[14px]">
-          <span className="font-semibold pt-1">Али Менеджер</span>
-          <span className="font-regular">Количество машин?</span>
+            <span className="font-semibold pt-1">{name}</span>
+            <span className="font-regular">{previewMessage}</span>
           </div>
           <div className="flex flex-col">
-          <span className="text-gray-500 font-bold text-[10px] pr-1 pt-2 pb-1">19:22</span>
-          <UnreadMessagesIcon/>
+            <span className="text-gray-500 font-bold text-[10px] pr-1 pt-2 pb-1">19:22</span>
+            <UnreadMessagesIcon count={count}/>
           </div>
       </div>
     </div>
     </>
   );
+}
+
+function ChatHeader() {
+  return (
+    <>
+    <div className="hidden lg:flex bg-[#F1F2F4] rounded-t-xl">
+      <img className="m-1.5 object-cover h-10 w-10 rounded-full" src="https://picsum.photos/200/300?random=1"></img>
+        <div className="flex justify-between w-full">
+          <div className="flex flex-col">
+            <span className="font-semibold">Али Менеджер</span>
+            <span className="font-regular">Онлайн</span>
+          </div>
+          <div className="flex flex-row pr-4 pt-2">
+            <div className="px-4">
+            <StarredIcon/>
+            </div>
+            <MenuDotsIcon/>
+          </div>
+        </div>
+    </div>
+    </>
+  ) 
 }
 
 function MessageItem({text}) {
@@ -100,7 +121,6 @@ function MessageItem({text}) {
     <div className="hidden lg:flex flex-row pt-4">
       <img className="m-1.5 object-cover h-10 w-10 rounded-full" src="https://picsum.photos/200/300?random=1"></img>
       <div className="p-1 text-white font-regular rounded-tl-xl rounded-tr-xl rounded-br-xl bg-[#007282]">
-
         <p>{text}</p>
       </div>
     </div>
@@ -108,19 +128,23 @@ function MessageItem({text}) {
   )
 }
 
-function ChatHeader() {
+function MessageInput() {
   return (
-    <>
-    <div className="hidden lg:flex bg-[#F1F2F4] rounded-xl">
-      <img className="m-1.5 object-cover h-10 w-10 rounded-full" src="https://picsum.photos/200/300?random=1"></img>
-        <div className="flex flex-col">
-          <span className="font-semibold">Али Менеджер</span>
-          <span className="font-regular">Онлайн</span>
-        </div>
+    <div className="flex flex-row bg-[#E9EAE8] bg-opacity-50 w-full h-10">
+      <EmogiIcon/>
+      <input className="bg-[#E9EAE8] bg-opacity-50 w-full outline-none" placeholder="Message"></input>
+      <div className="px-4 py-1">
+        <ClipIcon/>
+      </div>
+      <div className="px-4 py-1">
+        <SendMessageIcon/>
+      </div>
     </div>
-    </>
-  ) 
+
+  );
 }
+
+
 
 function StatusIcon({ name, active }) {
   let Icon =
@@ -213,13 +237,41 @@ function SearchForm() {
   )
 }
 
-function UnreadMessagesIcon() {
+function UnreadMessagesIcon({count}) {
   return (
-  <div>
-  <svg width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0C15.5228 0 20 4.47715 20 10Z" fill="#F9CC2D"/>
-  <path d="M11.5043 6.27468V15.002H9.65909V8.0261H9.60795L7.60938 9.27894V7.64258L9.76989 6.27468H11.5043Z" fill="black"/>
+    <span className="rounded-full h-4 w-4 bg-[#F9CC2D] text-[10px] font-bold text-center pt-0.5"> {count}</span>
+  );
+}
+
+function EmogiIcon() {
+  return (
+    <div className="px-2 py-1">
+    <svg width="30" height="30" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M17.5 2.44186C9.18362 2.44186 2.44186 9.18362 2.44186 17.5C2.44186 25.8164 9.18362 32.5581 17.5 32.5581C25.8164 32.5581 32.5581 25.8164 32.5581 17.5C32.5581 9.18362 25.8164 2.44186 17.5 2.44186ZM0 17.5C0 7.83502 7.83502 0 17.5 0C27.165 0 35 7.83502 35 17.5C35 27.165 27.165 35 17.5 35C7.83502 35 0 27.165 0 17.5ZM11.6354 23.2846C12.037 22.7429 12.8016 22.6292 13.3433 23.0308C14.529 23.9096 15.9602 24.4186 17.5 24.4186C19.0398 24.4186 20.471 23.9096 21.6567 23.0308C22.1984 22.6292 22.963 22.7429 23.3646 23.2846C23.7661 23.8263 23.6525 24.5909 23.1108 24.9925C21.5278 26.1659 19.5918 26.8605 17.5 26.8605C15.4082 26.8605 13.4722 26.1659 11.8892 24.9925C11.3475 24.5909 11.2339 23.8263 11.6354 23.2846Z"
+     fill="#36424B" fill-opacity="0.64"/>
+    <path d="M24.0116 15.0581C24.0116 16.4067 23.2828 17.5 22.3837 17.5C21.4847 17.5 20.7558 16.4067 20.7558 15.0581C20.7558 13.7095 21.4847 12.6163 22.3837 12.6163C23.2828 12.6163 24.0116 13.7095 24.0116 15.0581Z"
+     fill="#36424B" fill-opacity="0.64"/>
+    <path d="M14.2442 15.0581C14.2442 16.4067 13.5153 17.5 12.6163 17.5C11.7172 17.5 10.9884 16.4067 10.9884 15.0581C10.9884 13.7095 11.7172 12.6163 12.6163 12.6163C13.5153 12.6163 14.2442 13.7095 14.2442 15.0581Z"
+     fill="#36424B" fill-opacity="0.64"/>
+    </svg>
+    </div>
+  )
+}
+
+function ClipIcon() {
+  return (
+  <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M11.107 4.20327C14.7854 0.682244 20.733 0.682244 24.4114 4.20327C28.1129 7.74643 28.1129 13.5087 24.4114 17.0519L14.4763 26.5619C11.8637 29.0627 7.64415 29.0627 5.03157 26.5619C2.39587 24.039 2.39586 19.9308 5.03157 17.4078L14.8237 8.03464C16.3705 6.55405 18.862 6.55406 20.4087 8.03464C21.9786 9.53737 21.9786 11.9914 20.4087 13.4942L10.5451 22.9358C10.1711 23.2938 9.57767 23.2808 9.21964 22.9068C8.86161 22.5328 8.87458 21.9393 9.24861 21.5813L19.1122 12.1397C19.9108 11.3753 19.9108 10.1536 19.1122 9.38913C18.2905 8.60256 16.9419 8.60256 16.1202 9.38913L6.3281 18.7623C4.46369 20.547 4.46369 23.4228 6.3281 25.2074C8.21564 27.0142 11.2922 27.0142 13.1798 25.2074L23.1148 15.6974C26.0451 12.8925 26.0451 8.36262 23.1148 5.55775C20.1615 2.73075 15.3569 2.73075 12.4035 5.55775L4.39827 13.2205C4.02424 13.5785 3.43079 13.5656 3.07276 13.1915C2.71473 12.8175 2.7277 12.224 3.10173 11.866L11.107 4.20327Z"
+   fill="#36424B" fill-opacity="0.64"/>
   </svg>
-  </div>
+  );
+}
+
+function SendMessageIcon() {
+  return (
+    <svg width="30" height="30" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M26.4602 5.29529C24.754 5.59881 22.4537 6.36248 19.2254 7.43857L11.9173 9.87461C9.32142 10.7399 7.44122 11.3676 6.1132 11.9324C4.72477 12.5229 4.23086 12.9346 4.07044 13.2105C3.57636 14.0604 3.57636 15.1101 4.07044 15.9599C4.23086 16.2359 4.72477 16.6475 6.1132 17.238C7.44122 17.8029 9.32142 18.4305 11.9173 19.2958C11.9583 19.3095 11.9988 19.323 12.0387 19.3363C12.7477 19.5721 13.2989 19.7554 13.7731 20.0729C14.2299 20.3787 14.6223 20.7711 14.9281 21.2279C15.2455 21.7021 15.4289 22.2533 15.6647 22.9622C15.678 23.0022 15.6915 23.0427 15.7052 23.0837C16.5704 25.6796 17.1981 27.5598 17.7629 28.8878C18.3535 30.2762 18.7651 30.7701 19.041 30.9305C19.8909 31.4246 20.9406 31.4246 21.7905 30.9305C22.0664 30.7701 22.478 30.2762 23.0686 28.8878C23.6334 27.5598 24.2611 25.6796 25.1264 23.0837L27.5624 15.7756C28.6385 12.5473 29.4022 10.247 29.7057 8.54075C30.0107 6.82641 29.7776 6.09819 29.3402 5.66079C28.9028 5.22338 28.1746 4.99032 26.4602 5.29529ZM26.0678 3.08903C27.9668 2.75121 29.6771 2.82864 30.9247 4.07624C32.1723 5.32384 32.2498 7.03419 31.9119 8.93323C31.5762 10.8208 30.7573 13.2772 29.7206 16.3872L27.2343 23.8462C26.3907 26.377 25.7352 28.3435 25.1307 29.7648C24.5476 31.1358 23.9002 32.2961 22.9167 32.8678C21.3706 33.7667 19.4609 33.7667 17.9148 32.8678C16.9314 32.2961 16.2839 31.1358 15.7008 29.7648C15.0963 28.3436 14.4408 26.3771 13.5972 23.8463L13.5793 23.7923C13.2837 22.9057 13.1936 22.6652 13.066 22.4745C12.9231 22.2611 12.7398 22.0778 12.5265 21.935C12.3358 21.8074 12.0953 21.7173 11.2087 21.4217L11.1546 21.4037C8.62386 20.5601 6.6574 19.9046 5.23613 19.3002C3.86518 18.7171 2.70485 18.0696 2.13314 17.0862C1.23427 15.54 1.23427 13.6304 2.13314 12.0842C2.70485 11.1008 3.86518 10.4534 5.23614 9.87028C6.65742 9.26578 8.62391 8.61029 11.1547 7.76669L18.6138 5.28032C21.7238 4.24364 24.1802 3.42481 26.0678 3.08903ZM25.785 9.22475C26.2201 9.66473 26.2162 10.3741 25.7762 10.8093L19.8005 16.7191C19.3605 17.1543 18.6511 17.1503 18.216 16.7103C17.7809 16.2704 17.7848 15.5609 18.2248 15.1258L24.2005 9.21597C24.6405 8.78084 25.3499 8.78477 25.785 9.22475Z"
+    fill="#36424B" fill-opacity="0.64"/>
+    </svg>
   );
 }
