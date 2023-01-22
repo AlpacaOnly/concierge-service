@@ -33,8 +33,7 @@ export default () => {
   const contactForm = useContactForm(contactButton.events);
 
   let cities = citiesHooks.useCities();
-  cities = cities?.data?.map((value) => value.name);
-  cities = cities ?? [contactForm.form.values.city ?? ""];
+  cities = cities?.data ?? [];
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-14 xl:container xl:mx-auto px-4 pt-10 pb-5 sm:px-20 sm:py-16 max-sm:-mx-6 max-sm:-mt-4 rounded-xl shadow-md shadow-slate-200 bg-white">
@@ -130,7 +129,7 @@ export default () => {
         <CustomSection title="Контактная информация">
           <BaseForm onSubmit={contactForm.form.handleSubmit}>
             <div className="grid grid-cols-2 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-6">
-              <CustomField title="Номер телефона">
+              <CustomField title="Номер телефона" required>
                 <CustomInput
                   value={contactForm.form.values.phone ?? ""}
                   initialValue={contactForm.initialValues.phone ?? ""}
@@ -143,9 +142,9 @@ export default () => {
                   <CustomFieldError text={contactForm.form.errors.phone} />
                 ) : null}
               </CustomField>
-              <CustomField title="Город">
+              <CustomField title="Город" required>
                 <CustomSelect
-                  value={contactForm.form.values.city ?? ""}
+                  value={contactForm.form.values.city ?? -1}
                   onChange={contactForm.form.handleChange}
                   onBlur={contactForm.form.handleBlur}
                   name="city"
@@ -155,7 +154,7 @@ export default () => {
                   <CustomFieldError text={contactForm.form.errors.city} />
                 ) : null}
               </CustomField>
-              <CustomField title="Почта">
+              <CustomField title="Почта" required>
                 <CustomInput
                   value={contactForm.form.values.email ?? ""}
                   initialValue={contactForm.initialValues.email ?? ""}
@@ -258,18 +257,16 @@ function CustomSelect({ className, options, onFocus, ...props }) {
     <label className="mt-2 w-full text-zinc-200">
       <div className="relative">
         <select
-          onFocus={() => setState("focused")}
-          onBlur={() => setState("default")}
           className="text-sm sm:text-base text-black border-2 px-4 py-[10px] bg-zinc-100 focus:bg-zinc-200 focus:outline-none transition ease-in-out duration-150 rounded  w-full appearance-none"
           {...props}
         >
-          <option value="Не выбрано" disabled hidden>
+          <option value={-1} disabled hidden>
             Не выбрано
           </option>
 
           {options.map((value, index) => (
-            <option value={value} key={index}>
-              {value}
+            <option value={value.id} key={index}>
+              {value.name}
             </option>
           ))}
         </select>
@@ -482,9 +479,11 @@ function useContactForm(props) {
     validationSchema: yup.object({
       phone: yup
         .string()
+        .required("Это поле обязательное!")
         .matches(/^\S*$/, "Введите его без пробелов")
         .matches(/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/, "Введите номер телефона"),
-      email: yup.string().email("Введите адрес почты"),
+      email: yup.string().required("Это поле обязательное!").email("Введите адрес почты"),
+      city: yup.string().required("Это поле обязательное!"),
     }),
     validateOnChange: false,
     onSubmit: tools.events.onSubmit.bind(tools.events),
