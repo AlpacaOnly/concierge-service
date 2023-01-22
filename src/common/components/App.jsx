@@ -8,6 +8,10 @@ const ClientApplicationsRoute = loadable(() => import("../../client/routes/Appli
 const ClientReferenceRoute = loadable(() => import("../../client/routes/Reference"));
 const ClientHelpRoute = loadable(() => import("../../client/routes/Help"));
 const ClientLayout = loadable(() => import("../../client/components/Layout"));
+const ClientActiveChatLayout = loadable(() => import("../../client/routes/chats/Active"));
+const ClientUncompletedChatLayout = loadable(() => import("../../client/routes/chats/Uncompleted"));
+const ClientArchivedChatLayout = loadable(() => import("../../client/routes/chats/Archive"));
+const ClientChatLayout = loadable(() => import("../../client/components/ChatLayout"));
 
 export const App = () => {
   const RolesRoutes = useRolesBasedRoutes();
@@ -57,6 +61,11 @@ function useClientRoutes() {
         <Route path="applications" element={<ClientApplicationsRoute />} />
         <Route path="help" element={<ClientHelpRoute />} />
         <Route path="reference" element={<ClientReferenceRoute />} />
+      </Route>
+      <Route path="chats" element={<ClientChatLayout />} >
+        <Route path="active" element={<ClientActiveChatLayout/>}/>
+        <Route path="archive" element={<ClientArchivedChatLayout/>}/>
+        <Route path="uncompleted" element={<ClientUncompletedChatLayout/>}/>
       </Route>
     </>
   );
