@@ -29,18 +29,23 @@ export default () => {
           </ul>
         </div>
 
-        <div className="hidden lg:flex md:block flex-row justify-between lg:w-4/5 md:w-4/5 sm:w-4/5 xs:w-4/5 bg-white shadow-md rounded-xl mr-4 p-2">
-          <div className="flex flex-col gap-2">
+        <div className="hidden lg:flex md:flex flex-row justify-between lg:w-4/5 md:w-4/5 sm:w-4/5 xs:w-4/5 bg-white shadow-md rounded-xl mr-4 p-2">
+          <div className="flex flex-col justify-between">
+            <div className="flex flex-col gap-2">
             <SearchForm />
             <ChatItem name="Али Менеджер" previewMessage="Количество машин?" count="3"/> 
             <ChatItem name="Анна Менеджер" previewMessage="Закрывающий документ готов" count="1"/> 
             <ChatItem name="Макс Менеджер" previewMessage="Эконом или Бизнес?" count="2"/> 
+            </div>
+            <NewApplicationButton/>
           </div>
           <div className="justify-between flex-col text-[14px] hidden lg:flex md:flex lg:h-full lg:w-3/4 md:w-3/4 sm:w-3/4 xs:w-3/4 ml-4 rounded-xl bg-[#E8ECF5]"> 
             <ChatHeader/>
             <MessageItem text="Столяру Джузеппе попалось под руку полено, которое пищало человеческим голосом."/>
             {/* <MessageItem text="Давным-давно в городке на берегу Средиземного моря жил старый столяр Джузеппе, по прозванию Сизый Нос. Однажды ему попалось под руку полено, обыкновенное полено для топки очага в зимнее время."/> */}
+            <div className="px-5 py-2">
             <MessageInput/>
+            </div>
           </div>
         </div>
            
@@ -129,13 +134,13 @@ function MessageItem({text}) {
 
 function MessageInput() {
   return (
-    <div className="flex flex-row bg-[#E9EAE8] bg-opacity-50 w-full h-10">
+    <div className="flex flex-row bg-[#E9EAE8] bg-opacity-50 h-10 rounded-xl w-full border-[#007282]/50">
       <EmogiIcon/>
-      <input className="bg-[#E9EAE8] bg-opacity-50 w-full outline-none" placeholder="Message"></input>
-      <div className="px-4 py-1">
+      <input className="bg-[#E9EAE8] bg-opacity-50 outline-none w-full border-[#007282]/50" placeholder="Message"></input>
+      <div className="px-2 py-1">
         <ClipIcon/>
       </div>
-      <div className="px-4 py-1">
+      <div className="px-2 py-1">
         <SendMessageIcon/>
       </div>
     </div>
@@ -143,7 +148,13 @@ function MessageInput() {
   );
 }
 
-
+function NewApplicationButton() {
+  return (
+    <div className="flex flex-row">
+    <button className=" w-full h-10 rounded-xl text-white bg-[#007282]"> Новая Заявка </button>
+    </div>
+  )
+}
 
 function StatusIcon({ name, active }) {
   let Icon =
@@ -158,6 +169,15 @@ function StatusIcon({ name, active }) {
     );
 
   return <Icon active={active} />;
+}
+
+function NewApplicationIcon () {
+  return (
+  <svg width="25" height="25" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M27.5 13.125V15C27.5 20.8926 27.5 23.8388 25.6694 25.6694C23.8388 27.5 20.8926 27.5 15 27.5C9.10744 27.5 6.16117 27.5 4.33058 25.6694C2.5 23.8388 2.5 20.8926 2.5 15C2.5 9.10744 2.5 6.16117 4.33058 4.33058C6.16117 2.5 9.10744 2.5 15 2.5H16.875" stroke="#FDFFFC" stroke-width="1.5" stroke-linecap="round"/>
+  <path d="M20.8151 4.31883L21.6261 3.50781C22.9698 2.16406 25.1485 2.16406 26.4922 3.50781C27.8359 4.85155 27.8359 7.03018 26.4922 8.37392L25.6812 9.18494M20.8151 4.31883C20.8151 4.31883 20.9164 6.04224 22.4371 7.5629C23.9578 9.08357 25.6812 9.18494 25.6812 9.18494M20.8151 4.31883L13.359 11.7749C12.854 12.2799 12.6014 12.5324 12.3843 12.8109C12.1281 13.1393 11.9085 13.4946 11.7293 13.8706C11.5774 14.1894 11.4645 14.5282 11.2386 15.2057L10.5155 17.375M25.6812 9.18494L18.2251 16.641C17.7201 17.146 17.4676 17.3986 17.1891 17.6157C16.8607 17.8719 16.5054 18.0915 16.1294 18.2707C15.8106 18.4226 15.4718 18.5355 14.7943 18.7614L12.625 19.4845M12.625 19.4845L11.2214 19.9524C10.8879 20.0635 10.5203 19.9767 10.2718 19.7282C10.0233 19.4797 9.9365 19.1121 10.0476 18.7786L10.5155 17.375M12.625 19.4845L10.5155 17.375" stroke="#FDFFFC" stroke-width="1.5"/>
+  </svg>
+  )
 }
 
 function ActiveIcon({active}) {
