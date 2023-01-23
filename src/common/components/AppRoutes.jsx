@@ -12,6 +12,9 @@ const ClientReferenceRoute = loadable(() => import("../../client/routes/Referenc
 const ClientHelpRoute = loadable(() => import("../../client/routes/Help"));
 const ClientLayout = loadable(() => import("../../client/components/Layout"));
 
+const ClientChatLayout = loadable(() => import("../../client/components/ChatLayout"));
+
+
 export const AppRoutes = () => {
   const user = userHooks.useUser();
   const roles = useRoles();
@@ -22,6 +25,7 @@ export const AppRoutes = () => {
       <Route index element={<LoginRoute />} />
 
       {role === roles.CLIENT && (
+        <>
         <Route path="panel" element={<ClientLayout />}>
           <Route index element={<ClientSettingsRoute />} />
           <Route path="settings" element={<ClientSettingsRoute />} />
@@ -29,6 +33,12 @@ export const AppRoutes = () => {
           <Route path="help" element={<ClientHelpRoute />} />
           <Route path="reference" element={<ClientReferenceRoute />} />
         </Route>
+        <Route path="chats" element={<ClientChatLayout />}>
+          <Route path="active" element={<ClientChatLayout />} />
+          <Route path="archive" element={<ClientChatLayout />} />
+          <Route path="uncompleted" element={<ClientChatLayout />} />
+        </Route>
+          </>
       )}
       {role === roles.ADMIN && <Route path="panel" element={"admin"}></Route>}
       {role === roles.MANAGER && <Route path="panel" element={"manager"}></Route>}
