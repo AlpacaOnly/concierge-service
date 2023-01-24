@@ -24,13 +24,7 @@ export const Header = () => {
         <CloseIcon className={`${isMenuDropdownOpened ? "" : "hidden"}`} />
       </button>
 
-      <div className="flex items-center select-none px-3 sm:px-4 lg:px-10">
-        <LogoIcon />
-        <span className="hidden sm:flex flex-col text-black ml-2 xs:ml-4 lg:ml-6">
-          <span className="text-xs lg:text-sm font-bold -mb-1">CONCIERGE</span>
-          <span className="text-lg lg:text-xl font-semibold text-emerald-900">SERVICE</span>
-        </span>
-      </div>
+      <Logo/>
 
       <div
         id="mobileMenuDropdown"
@@ -64,17 +58,7 @@ export const Header = () => {
         </ul>
       </div>
 
-      <div className="flex lg:hidden xl:flex items-center max-lg:ml-auto pl-3 sm:pl-8 lg:mr-8 pr-3 sm:pr-10 lg:pr-6">
-        <span className="flex flex-col text-right mr-2 sm:mr-7">
-          <span className="font-semibold lg:text-lg text-sm truncate whitespace-nowrap w-44">
-            {`${user.get()?.surname} ${user.get()?.name}`.length <= 17
-              ? `${user.get()?.surname} ${user.get()?.name}`
-              : `${user.get()?.name} ${user.get()?.surname?.[0]}.`}
-          </span>
-          <span className="font-normal text-xs">{user.get()?.email}</span>
-        </span>
-        <img src="/users/1.png" alt="#" className="w-10 h-10 lg:w-14 lg:h-14 rounded-full" />
-      </div>
+      <Profile/>
     </div>
   );
 };
@@ -124,6 +108,36 @@ function TabIcon({ name, active }) {
 
   return <Icon active={active} />;
 }
+
+export function Profile () {
+  const user = userHooks.useUser();
+  return (
+    <div className="flex lg:hidden xl:flex items-center max-lg:ml-auto pl-3 sm:pl-8 lg:mr-8 pr-3 sm:pr-10 lg:pr-6">
+        <span className="flex flex-col text-right mr-2 sm:mr-7">
+          <span className="font-semibold lg:text-lg text-sm truncate whitespace-nowrap w-44">
+            {`${user.get()?.surname} ${user.get()?.name}`.length <= 17
+              ? `${user.get()?.surname} ${user.get()?.name}`
+              : `${user.get()?.name} ${user.get()?.surname?.[0]}.`}
+          </span>
+          <span className="font-normal text-xs">{user.get()?.email}</span>
+        </span>
+        <img src="/users/1.png" alt="#" className="w-10 h-10 lg:w-14 lg:h-14 rounded-full" />
+      </div>
+  );
+}
+
+export function Logo () {
+  return (
+    <div className="flex items-center select-none px-3 sm:px-4 lg:px-10">
+        <LogoIcon />
+        <span className="hidden sm:flex flex-col text-black ml-2 xs:ml-4 lg:ml-6">
+          <span className="text-xs lg:text-sm font-bold -mb-1">CONCIERGE</span>
+          <span className="text-lg lg:text-xl font-semibold text-emerald-900">SERVICE</span>
+        </span>
+      </div>
+  )
+}
+
 
 function LogoIcon() {
   return (

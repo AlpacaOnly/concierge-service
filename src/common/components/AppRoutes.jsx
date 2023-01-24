@@ -13,7 +13,7 @@ const ClientHelpRoute = loadable(() => import("../../client/routes/Help"));
 const ClientLayout = loadable(() => import("../../client/components/Layout"));
 
 const ClientChatLayout = loadable(() => import("../../client/components/ChatLayout"));
-
+const AdminChatLayout = loadable(() => import("../../admin/components/Layout"))
 
 export const AppRoutes = () => {
   const user = userHooks.useUser();
@@ -40,7 +40,15 @@ export const AppRoutes = () => {
         </Route>
           </>
       )}
-      {role === roles.ADMIN && <Route path="panel" element={"admin"}></Route>}
+      {role === roles.ADMIN && (
+       <Route path="panel" element={<AdminChatLayout/>} >
+          <Route path="managing" element={<AdminChatLayout />} />
+          <Route path="statistic" element={<AdminChatLayout />} />
+          <Route path="settings" element={<AdminChatLayout />} />
+       </Route>
+       )}
+
+       
       {role === roles.MANAGER && <Route path="panel" element={"manager"}></Route>}
       {role === roles.COMPANY && <Route path="panel" element={"company"}></Route>}
       {role === roles.PARTNER && <Route path="panel" element={"partner"}></Route>}
