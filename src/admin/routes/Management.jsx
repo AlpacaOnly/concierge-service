@@ -1,8 +1,9 @@
 import {NavLink} from 'react-router-dom'
+import { useState } from 'react';
 import { SearchForm } from '../../client/routes/Applications';
-import { SearchIcon } from '../../client/routes/Applications';
 
 export const Panel = () => {
+    const [showPartnerForm, setShowPartnerForm] = useState(false);
     return (
         <>
         <div className="flex flex-1 overflow-hidden h-screen max-w-screen-2xl mt-8 pb-6 pl-8"> 
@@ -15,29 +16,40 @@ export const Panel = () => {
             
             <NavItem
             text="Admin"
-            icon="admin"/>
+            icon="admin"
+            />
             
-            <div class="group inline-block relative">
-                <NavItem
-                text="Управление"
-                icon="managing"
-                link="/panel/managing"/>
-                <ul className="hidden group-hover:flex flex-col text-sm pl-[54px]">
-                    <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl"><a>Менеджеры</a></li>
-                    <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl"><a>Партнеры</a></li>
-                    <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl"><a>Клиенты</a></li>
+            <div className="group inline-block relative">
+                <div className="flex flex-row hover:bg-[#F3F4F6] hover:rounded-xl focus:bg-[#F3F4F6] focus:rounded-xl">
+                    <NavItem
+                    text="Управление"
+                    icon="managing"
+                    link="/panel/managing"/>
+                    <div className="group inline-block relative">
+                    <NavIcon name="arrow"/>
+                    </div>
+                </div>
+                <ul className="hidden group-hover:flex flex-col text-sm">
+                    <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl pl-[54px]"><a>Менеджеры</a></li>
+                    <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl pl-[54px]"><a>Партнеры</a></li>
+                    <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl pl-[54px]"><a>Клиенты</a></li>
                 </ul>
             </div>
 
-            <NavItem
-            text="Статистика"
-            icon="statistic"
-            link="/panel/statistic"/>
-
-            <NavItem
-            text="Settings"
-            icon="settings"
-            link="/panel/settings"/>
+            <div className=" hover:bg-[#F3F4F6] hover:rounded-xl focus:bg-[#F3F4F6] focus:rounded-xl">
+                <NavItem
+                    text="Статистика"
+                    icon="statistic"
+                    link="/panel/statistic"/>
+            </div>
+            
+            
+            <div className=" hover:bg-[#F3F4F6] hover:rounded-xl focus:bg-[#F3F4F6] focus:rounded-xl">
+                <NavItem
+                text="Settings"
+                icon="settings"
+                link="/panel/settings"/>
+            </div>
             
             </ul>
             </div>
@@ -47,11 +59,35 @@ export const Panel = () => {
                 <SearchForm/>
 
                 <button><DeleteIcon/></button>
+                
+                {/* {showPartnerForm ? (
+                <>
+                    <div className="form-popup">
+                        <form className="container">
+                            <h1>Добавить партнера</h1>
+                            <label htmlFor="name"><b>Название компании</b></label>
+                            <input type="text" placeholder="Введите название компании" name="name" required></input>
 
-                <Button icon="plus" text="Добавить партнера"/>
+                            <label htmlFor="OrganizationForm"><b>Форма Организации</b></label>
+                            <input type="password" placeholder="ТОО/ИП/АО" name="OrganizationForm" required></input>
+
+                            <label htmlFor="iin"><b>ИИН</b></label>
+                            <input type="number" placeholder="Введите ИИН" name="iin" required></input>
+
+                            <label htmlFor="contract"><b>Договор</b></label>
+                            <input type="file" className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-violet-50 file:text-violet-700 file:text-sm file:font-semibold hover:file:bg-violet-100"></input>
+
+                            <Button type="submit" name="Сохранить"/>
+                            <Button type="button" onClick={() => setShowModal(false)} name="Отменить"/>
+                        </form>
+                    </div>
+                </>
+                ) : null} */}
+
+                <Button icon="plus" text="Добавить партнера" onClick={()=>setShowPartnerForm(true)}/>
                 </div>
         
-                <Table/>
+                <PartnerTable/>
             </div>
            
         </div>
@@ -59,22 +95,22 @@ export const Panel = () => {
     )
 }
 
-function Table () {
+function PartnerTable () {
     return (
-        <table className="table-auto">
-            <thead className="bg-[#F4F3F3] text-black/50 text-medium text-sm h-10">
+        <table className="w-full text-xs lg:text-sm">
+            <thead className="bg-[#F4F3F3] text-black/50 text-medium lg:text-sm text-xs uppercase h-10">
                 <tr>
-                    <th className="p-4"><Select/></th>
-                    <th>НАИМЕНОВАНИЕ</th>
-                    <th>ФОРМА ОРГАНИЗАЦИИ</th>
-                    <th>КОД</th>
-                    <th>ИИН</th>
-                    <th>Изменить</th>
+                    <th scope="col"  className="p-4"><Select/></th>
+                    <th scope="col" >НАИМЕНОВАНИЕ</th>
+                    <th scope="col" >ФОРМА ОРГАНИЗАЦИИ</th>
+                    <th scope="col" >КОД</th>
+                    <th scope="col" >ИИН</th>
+                    <th scope="col" >Редактировать</th>
                 </tr>
             </thead>
             <tbody className="text-center">
                 <tr className="h-14 border-b">
-                    <td className="pt-1"><Select/></td>
+                    <td scope="row"  className="pt-1"><Select/></td>
                     <td>Astana Hub</td>
                     <td>Товарищество с ограниченной ответственностью (ТОО)</td>
                     <td>95</td>
@@ -82,7 +118,7 @@ function Table () {
                     <td className="flex justify-center mt-2"><Button icon="edit" text="Редактировать"/></td>
                 </tr>
                 <tr className="h-14 border-b">
-                    <td className="pt-1"><Select/></td>
+                    <td scope="row" className="pt-1"><Select/></td>
                     <td>Astana Hub</td>
                     <td>Товарищество с ограниченной ответственностью (ТОО)</td>
                     <td>95</td>
@@ -90,7 +126,7 @@ function Table () {
                     <td className="flex justify-center mt-2"><Button icon="edit" text="Редактировать"/></td>
                 </tr>
                 <tr className="h-14 border-b">
-                    <td className="pt-1"><Select/></td>
+                    <td scope="row"  className="pt-1"><Select/></td>
                     <td>Astana Hub</td>
                     <td>Товарищество с ограниченной ответственностью (ТОО)</td>
                     <td>95</td>
@@ -109,7 +145,7 @@ function NavItem (props) {
         <NavLink to={props.link || '#'}>
             {({ isActive }) => (
             <>
-            <div className="flex gap-4 py-2 hover:bg-[#F3F4F6] hover:rounded-xl p-4 focus:bg-[#F3F4F6] focus:rounded-xl">
+            <div className="flex gap-4 py-2 p-4">
                 <NavIcon name={props.icon} active={isActive} />
                 <span
                     className={`text-sm lg:text-base font-regular align-middle ${
@@ -136,6 +172,8 @@ function NavIcon ({ name, active }) {
       StatisticIcon
     ) : name == "admin" ? (
       AdminIcon
+    ) : name == "arrow" ? (
+        ArrowUpIcon
     ) : (
       <span />
     );
@@ -162,7 +200,8 @@ function Select() {
 
 function Button (props) {
     return (
-        <button className="bg-[#007282] text-white w-fit rounded-xl text-sm px-4 py-2 flex flex-row ">
+        <button className="bg-[#007282] text-white w-fit rounded-xl  text-xs lg:text-sm px-4 py-2 flex flex-row "
+        type={props.type} onClick={props.onClick}>
             <ButtonIcon name={props.icon}/>
         {props.text}</button>
     )
@@ -240,7 +279,7 @@ function ButtonIcon ({name}) {
     ) : name == "edit" ? (
       EditIcon
     ) : (
-      <span />
+        <span />
     );
 
   return <Icon />;
@@ -248,9 +287,11 @@ function ButtonIcon ({name}) {
 
 function ArrowUpIcon () {
     return (
+        <div className="mt-2 ml-16">
         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M4.58334 13.75L11 7.33334L17.4167 13.75" stroke="#1C274C" strokeOpacity="0.7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
+        </div>
     )
 }
 
