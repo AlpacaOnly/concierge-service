@@ -3,13 +3,15 @@ export default () => {
         <>
             <h1 className="font-semibold text-2xl px-8 pt-8">Статистика</h1>
             <span className="text-[#7C8DB5] px-8">Здесь вся информация по всем существующим заявкам</span>
-            <div className="flex justify-center p-8 w-full">
-                <div className="border border-[#E6EDFF] rounded-xl grid lg:grid-cols-4 grid-rows-4 divide-x divide-[#E6EDFF] py-6 ">
+            <div className="flex justify-center flex-col p-8 w-full">
+                <div className="border border-[#E6EDFF] rounded-xl grid lg:grid-cols-4 lg:grid-rows-1 grid-rows-4 divide-x divide-[#E6EDFF] py-6 ">
                     <Card ClientsNumber="6784" text="Количество клиентов" icon="users"/>
                     <Card ClientsNumber="10124" text="Количество выполненных заказов" icon="orders"/>
                     <Card ClientsNumber="114" text="Количество партнеров" icon="users"/>
                     <Card ClientsNumber="6563" text="Довольных клентов" icon="check"/>
                 </div>
+                <span className="font-medium text-xl my-6">Список заказов</span>
+                <OrdersTable/>
             </div>
 
         </>
@@ -31,6 +33,54 @@ function Card(props) {
     )
 }
 
+function OrdersTable () {
+    return (
+    <div className="border border-[#E6EDFF] rounded-xl w-full">
+        <table className="table-fixed w-full text-center">
+        <thead>
+            <tr className="h-14 border-b">
+            <th>ID</th>
+            <th>Дата создания</th>
+            <th>Имя клиента</th>
+            <th>Имя менеджера</th>
+            <th>Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr className="h-14 border-b">
+            <td>1</td>
+            <td>12/12/2022</td>
+            <td>Client</td>
+            <td>Manager</td>
+            <td>Done</td>
+            </tr>
+            <tr className="h-14 border-b">
+            <td>2</td>
+            <td>12/12/2022</td>
+            <td>Client</td>
+            <td>Manager</td>
+            <td>Done</td>
+            </tr>
+            <tr className="h-14 border-b">
+            <td>3</td>
+            <td>12/12/2022</td>
+            <td>Client</td>
+            <td>Manager</td>
+            <td>Done</td>
+            </tr>
+            <tr className="h-14 border-b">
+            <td>4</td>
+            <td>12/12/2022</td>
+            <td>Client</td>
+            <td>Manager</td>
+            <td>Done</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
+    
+    )
+}
 
 function StatIcon({ name}) {
     let Icon =
