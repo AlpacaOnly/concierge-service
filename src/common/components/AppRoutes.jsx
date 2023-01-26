@@ -13,11 +13,15 @@ const ClientHelpRoute = loadable(() => import("../../client/routes/Help"));
 const ClientLayout = loadable(() => import("../../client/components/Layout"));
 
 const ClientChatLayout = loadable(() => import("../../client/components/ChatLayout"));
-const AdminChatLayout = loadable(() => import("../../admin/components/Layout"))
-const AdminManagementLayout = loadable(() => import("../../admin/routes/Management"))
+
+const AdminLayout = loadable(() => import("../../admin/components/Layout"))
+const AdminPartnerLayout = loadable(() => import("../../admin/routes/Partner"))
+const AdminManagerLayot = loadable (()=>import("../../admin/routes/Manager")) 
+const AdminClientLayot = loadable (()=>import("../../admin/routes/Client")) 
 const AdminStatisticLayout = loadable(() => import("../../admin/routes/Statistic"))
 const AdminSettingsLayout = loadable (() => import ("../../admin/routes/Settings"))
 const AdminAddPartnerLayout = loadable(() => import("../../admin/components/AddPartnerLayout"))
+const AdminEditPartnerLayout = loadable(() => import("../../admin/components/EditPartnerLayout"))
 
 
 export const AppRoutes = () => {
@@ -46,9 +50,12 @@ export const AppRoutes = () => {
                 </>
             )}
             {role === roles.ADMIN && (
-                <Route path="panel" element={<AdminChatLayout/>}>
-                    <Route index element={<AdminManagementLayout/>}/>
-                    <Route path="addpartner" element={<AdminAddPartnerLayout/>}/>
+                <Route path="panel" element={<AdminLayout/>}>
+                    <Route path="partner" element={<AdminPartnerLayout/>}>
+                        <Route path="add" element={<AdminAddPartnerLayout/>}/>
+                    </Route>
+                    <Route path="manager" element={<AdminManagerLayot/>}/>
+                    <Route path="client" element={<AdminClientLayot/>}/>
                     <Route path="statistic" element={<AdminStatisticLayout/>}/>
                     <Route path="settings" element={<AdminSettingsLayout/>}/>
                 </Route>

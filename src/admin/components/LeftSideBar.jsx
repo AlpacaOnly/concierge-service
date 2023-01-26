@@ -1,6 +1,8 @@
 import {NavLink} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 export function LeftSideBar () {
+    const navigate = useNavigate();
     return (
         <div
             className="list-none font-[Inter] w-full xl:w-1/5 lg:w-1/3 md:w-1/3 bg-white shadow-md rounded-xl mr-4 p-4 flex flex-col justify-between">
@@ -21,15 +23,22 @@ export function LeftSideBar () {
                             <NavItem
                                 text="Управление"
                                 icon="managing"
-                                link="/panel"/>
+                                link="/panel/partner"/>
                             <div className="group inline-block relative">
                                 <NavIcon name="arrow"/>
                             </div>
                         </div>
                         <ul className="hidden group-hover:flex flex-col text-sm">
-                            <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl pl-[54px]"><a>Менеджеры</a></li>
-                            <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl pl-[54px]"><a>Партнеры</a></li>
-                            <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl pl-[54px]"><a>Клиенты</a></li>
+                            <a onClick={()=> navigate("/panel/manager")}>
+                                <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl cursor-pointer pl-[54px]">Менеджеры</li>
+                            </a>
+                            <a onClick={()=> navigate("/panel/partner")}>
+                                <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl cursor-pointer pl-[54px]">Партнеры</li>
+                            </a>
+                            <a onClick={()=> navigate("/panel/client")}>
+                                <li className="py-2 hover:bg-[#F3F4F6] hover:rounded-xl cursor-pointer pl-[54px]">Клиенты</li>
+                            </a>
+                            
                         </ul>
                     </div>
 
@@ -103,16 +112,6 @@ function NavIcon({name, active}) {
     return <Icon active={active}/>;
 }
 
-
-function DropDown() {
-    return (
-        <ul className="dropdown-content absolute hidden ">
-            <li><a>Менеджеры</a></li>
-            <li><a>Партнеры</a></li>
-            <li><a>Клиенты</a></li>
-        </ul>
-    )
-}
 
 function ArrowUpIcon() {
     return (

@@ -3,6 +3,7 @@ import {SearchForm} from '../../client/routes/Applications';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+
 export default () => {
     const navigate = useNavigate();
     // const [showPartnerForm, setShowPartnerForm] = useState(false);
@@ -13,36 +14,7 @@ export default () => {
 
                     <button><DeleteIcon/></button>
 
-                    {/* {showPartnerForm ? (
-                    <div className="flex flex-col">
-                        <h1>Добавить партнера</h1>
-                        <div className="grid grid-cols-2 gap-4 max-w-xl m-auto">
-            
-                            <div className="col-span-2 lg:col-span-1">
-                                <input type="text" placeholder="ТОО/ИП/АО" name="OrganizationForm" required></input>
-                            </div>
-            
-                            <div className="col-span-2 lg:col-span-1">
-                                <input type="number" placeholder="Введите ИИН" name="iin" required></input>
-                            </div>
-            
-                            <div className="col-span-2 lg:col-span-1">
-                                <input type="file"
-                                       className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-violet-50 file:text-violet-700 file:text-sm file:font-semibold hover:file:bg-violet-100"
-                                       placeholder="Прикерпите договор"></input>
-                            </div>
-            
-                            <div className="col-span-2">
-                                <button type="button" className='text-left' onClick={() => setShowPartnerForm(false)}>Отменить
-                                </button>
-                                <button type="submit" className='text-right'>Сохранить</button>
-                            </div>
-            
-                        </div>
-                    </div>
-                    ) : null} */}
-
-                    <Button icon="plus" text="Добавить партнера" onClick={() => navigate("/panel/addpartner")}/>
+                    <Button icon="plus" text="Добавить партнера" onClick={() => navigate("/panel/add")}/>
                 </div>
 
                 <PartnerTable/>
@@ -52,6 +24,7 @@ export default () => {
 
 
 function PartnerTable() {
+    const navigate = useNavigate();
     return (
         <table className="w-full text-xs lg:text-sm">
             <thead className="bg-[#F4F3F3] text-black/50 text-medium lg:text-sm text-xs uppercase h-10">
@@ -71,7 +44,7 @@ function PartnerTable() {
                 <td>Товарищество с ограниченной ответственностью (ТОО)</td>
                 <td>95</td>
                 <td>120400192129</td>
-                <td className="flex justify-center mt-2"><Button icon="edit" text="Редактировать"/></td>
+                <td className="flex justify-center mt-2"><Button onClick={() => navigate("/panel/edit")} icon="edit" text="Редактировать"/></td>
             </tr>
             <tr className="h-14 border-b">
                 <td scope="row" className="pt-1"><Select/></td>
@@ -79,7 +52,7 @@ function PartnerTable() {
                 <td>Товарищество с ограниченной ответственностью (ТОО)</td>
                 <td>95</td>
                 <td>120400192129</td>
-                <td className="flex justify-center mt-2"><Button icon="edit" text="Редактировать"/></td>
+                <td className="flex justify-center mt-2"><Button onClick={() => navigate("/panel/edit")} icon="edit" text="Редактировать"/></td>
             </tr>
             <tr className="h-14 border-b">
                 <td scope="row" className="pt-1"><Select/></td>
@@ -87,7 +60,7 @@ function PartnerTable() {
                 <td>Товарищество с ограниченной ответственностью (ТОО)</td>
                 <td>95</td>
                 <td>120400192129</td>
-                <td className="flex justify-center mt-2"><Button icon="edit" text="Редактировать"/></td>
+                <td className="flex justify-center mt-2"><Button onClick={() => navigate("/panel/edit")} icon="edit" text="Редактировать"/></td>
             </tr>
             </tbody>
         </table>
@@ -102,8 +75,8 @@ function Select() {
 
 function Button(props) {
     return (
-        <button className="bg-[#007282] text-white w-fit rounded-xl  text-xs lg:text-sm px-4 py-2 flex flex-row "
-                type={props.type} onClick={props.onClick}>
+        <button onClick={props.onClick} className="bg-[#007282] text-white w-fit rounded-xl  text-xs lg:text-sm px-4 py-2 flex flex-row "
+                type={props.type}>
             <ButtonIcon name={props.icon}/>
             {props.text}
             </button>
