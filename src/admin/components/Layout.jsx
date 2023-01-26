@@ -1,6 +1,6 @@
 import {Header} from "../routes/Header"
 import {Outlet} from "react-router-dom";
-import {LeftSideBar} from "../routes/Management.jsx";
+import {LeftSideBar} from "../components/LeftSideBar";
 
 export default () => {
     return (

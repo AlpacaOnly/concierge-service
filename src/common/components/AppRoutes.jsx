@@ -16,7 +16,9 @@ const ClientChatLayout = loadable(() => import("../../client/components/ChatLayo
 const AdminChatLayout = loadable(() => import("../../admin/components/Layout"))
 const AdminManagementLayout = loadable(() => import("../../admin/routes/Management"))
 const AdminStatisticLayout = loadable(() => import("../../admin/routes/Statistic"))
+const AdminSettingsLayout = loadable (() => import ("../../admin/routes/Settings"))
 const AdminAddPartnerLayout = loadable(() => import("../../admin/components/AddPartnerLayout"))
+
 
 export const AppRoutes = () => {
     const user = userHooks.useUser();
@@ -48,7 +50,7 @@ export const AppRoutes = () => {
                     <Route index element={<AdminManagementLayout/>}/>
                     <Route path="addpartner" element={<AdminAddPartnerLayout/>}/>
                     <Route path="statistic" element={<AdminStatisticLayout/>}/>
-                    <Route path="settings" element={<AdminChatLayout/>}/>
+                    <Route path="settings" element={<AdminSettingsLayout/>}/>
                 </Route>
 
             )}
