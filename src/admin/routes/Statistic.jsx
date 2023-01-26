@@ -4,10 +4,10 @@ export default () => {
             <h1 className="font-semibold text-2xl px-8 pt-8">Статистика</h1>
             <span className="text-[#7C8DB5] px-8">Здесь вся информация по всем существующим заявкам</span>
             <div className="flex justify-center flex-col p-8 w-full">
-                <div className="border border-[#E6EDFF] rounded-xl grid lg:grid-cols-4 lg:grid-rows-1 grid-rows-4 divide-x divide-[#E6EDFF] py-6 ">
-                    <Card ClientsNumber="6784" text="Количество клиентов" icon="users"/>
-                    <Card ClientsNumber="10124" text="Количество выполненных заказов" icon="orders"/>
-                    <Card ClientsNumber="114" text="Количество партнеров" icon="users"/>
+                <div className="border border-[#E6EDFF] rounded-xl grid lg:grid-cols-4 lg:grid-rows-1 grid-rows-4 divide-x divide-[#E6EDFF] py-4 ">
+                    <Card ClientsNumber="6784" text="Клиентов" icon="users"/>
+                    <Card ClientsNumber="10124" text="Выполненных заказов" icon="orders"/>
+                    <Card ClientsNumber="114" text="Партнеров" icon="users"/>
                     <Card ClientsNumber="6563" text="Довольных клентов" icon="check"/>
                 </div>
                 <span className="font-medium text-xl my-6">Список заказов</span>
@@ -24,7 +24,7 @@ function Card(props) {
         <div className="flex flex-row justify-between px-4">
             <div className="flex flex-col">
                 <span className="text-2xl font-semibold">{props.ClientsNumber}</span>
-                <span>{props.text}</span>
+                <span className="">{props.text}</span>
             </div>
             <div>
                 <StatIcon name={props.icon}/>

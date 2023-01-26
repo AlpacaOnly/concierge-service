@@ -1,8 +1,11 @@
 import {useState} from 'react';
 import {SearchForm} from '../../client/routes/Applications';
+import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default () => {
-    const [showPartnerForm, setShowPartnerForm] = useState(false);
+    const navigate = useNavigate();
+    // const [showPartnerForm, setShowPartnerForm] = useState(false);
     return (
         <>
                 <div className="flex justify-between m-2">
@@ -10,7 +13,7 @@ export default () => {
 
                     <button><DeleteIcon/></button>
 
-                    {showPartnerForm ? (
+                    {/* {showPartnerForm ? (
                     <div className="flex flex-col">
                         <h1>Добавить партнера</h1>
                         <div className="grid grid-cols-2 gap-4 max-w-xl m-auto">
@@ -37,9 +40,9 @@ export default () => {
             
                         </div>
                     </div>
-                    ) : null}
+                    ) : null} */}
 
-                    <Button icon="plus" text="Добавить партнера" onClick={() => setShowPartnerForm(true)}/>
+                    <Button icon="plus" text="Добавить партнера" onClick={() => navigate("/panel/addpartner")}/>
                 </div>
 
                 <PartnerTable/>
@@ -47,12 +50,6 @@ export default () => {
     )
 }
 
-
-function Input(props) {
-    <div className="col-span-2 lg:col-span-1">
-        <input type={props.type} placeholder={props.placeholder} name={props.name} required></input>
-    </div>
-}
 
 function PartnerTable() {
     return (
@@ -108,7 +105,8 @@ function Button(props) {
         <button className="bg-[#007282] text-white w-fit rounded-xl  text-xs lg:text-sm px-4 py-2 flex flex-row "
                 type={props.type} onClick={props.onClick}>
             <ButtonIcon name={props.icon}/>
-            {props.text}</button>
+            {props.text}
+            </button>
     )
 }
 
