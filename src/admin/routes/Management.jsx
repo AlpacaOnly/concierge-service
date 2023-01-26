@@ -5,58 +5,48 @@ export default () => {
     const [showPartnerForm, setShowPartnerForm] = useState(false);
     return (
         <>
-            <div
-                className="hidden lg:flex md:flex flex-col lg:w-4/5 md:w-4/5 sm:w-4/5 xs:w-4/5 bg-white shadow-md rounded-xl mr-4">
                 <div className="flex justify-between m-2">
                     <SearchForm/>
 
                     <button><DeleteIcon/></button>
 
                     {showPartnerForm ? (
-                        <PartnerForm/>
+                    <div className="flex flex-col">
+                        <h1>Добавить партнера</h1>
+                        <div className="grid grid-cols-2 gap-4 max-w-xl m-auto">
+            
+                            <div className="col-span-2 lg:col-span-1">
+                                <input type="text" placeholder="ТОО/ИП/АО" name="OrganizationForm" required></input>
+                            </div>
+            
+                            <div className="col-span-2 lg:col-span-1">
+                                <input type="number" placeholder="Введите ИИН" name="iin" required></input>
+                            </div>
+            
+                            <div className="col-span-2 lg:col-span-1">
+                                <input type="file"
+                                       className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-violet-50 file:text-violet-700 file:text-sm file:font-semibold hover:file:bg-violet-100"
+                                       placeholder="Прикерпите договор"></input>
+                            </div>
+            
+                            <div className="col-span-2">
+                                <button type="button" className='text-left' onClick={() => setShowPartnerForm(false)}>Отменить
+                                </button>
+                                <button type="submit" className='text-right'>Сохранить</button>
+                            </div>
+            
+                        </div>
+                    </div>
                     ) : null}
 
                     <Button icon="plus" text="Добавить партнера" onClick={() => setShowPartnerForm(true)}/>
                 </div>
 
                 <PartnerTable/>
-            </div>
         </>
     )
 }
 
-function PartnerForm() {
-    return (
-        <div className="flex flex-col">
-            <h1>Добавить партнера</h1>
-            <div className="grid grid-cols-2 gap-4 max-w-xl m-auto">
-
-                <div className="col-span-2 lg:col-span-1">
-                    <input type="text" placeholder="ТОО/ИП/АО" name="OrganizationForm" required></input>
-                </div>
-
-                <div className="col-span-2 lg:col-span-1">
-                    <input type="number" placeholder="Введите ИИН" name="iin" required></input>
-                </div>
-
-
-                <div className="col-span-2 lg:col-span-1">
-                    <input type="file"
-                           className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-violet-50 file:text-violet-700 file:text-sm file:font-semibold hover:file:bg-violet-100"
-                           placeholder="Прикерпите договор"></input>
-                </div>
-
-                <div className="col-span-2">
-                    <button type="button" className='text-left' onClick={() => setShowPartnerForm(false)}>Отменить
-                    </button>
-                    <button type="submit" className='text-right'>Сохранить</button>
-                </div>
-
-
-            </div>
-        </div>
-    )
-}
 
 function Input(props) {
     <div className="col-span-2 lg:col-span-1">
