@@ -7,13 +7,39 @@ export const Panel = () => {
     return (
         <>
         <div className="flex flex-1 overflow-hidden h-screen max-w-screen-2xl mt-8 pb-6 pl-8"> 
-            <div className="font-[Inter] w-full xl:w-1/5 lg:w-1/3 md:w-1/3 bg-white shadow-md rounded-xl mr-4 p-4">
+            <LeftSideBar/>
 
+            <div className="hidden lg:flex md:flex flex-col lg:w-4/5 md:w-4/5 sm:w-4/5 xs:w-4/5 bg-white shadow-md rounded-xl mr-4">
+                <div className="flex justify-between m-2">
+                <SearchForm/>
+
+                <button><DeleteIcon/></button>
+                
+                {showPartnerForm ? (
+                <PartnerForm/>
+                ) : null}
+
+                <Button icon="plus" text="Добавить партнера" onClick={()=>setShowPartnerForm(true)}/>
+                </div>
+        
+                <PartnerTable/>
+            </div>
+           
+        </div>
+        </>
+    )
+}
+
+
+export function LeftSideBar () {
+    return (
+    <div className="list-none font-[Inter] w-full xl:w-1/5 lg:w-1/3 md:w-1/3 bg-white shadow-md rounded-xl mr-4 p-4 flex flex-col justify-between">
+        <div>
             <ul
                 aria-labelledby="mobileMenuToggle"
-                className="list-none flex flex-col"
+                className="flex flex-col"
             >
-            
+
             <NavItem
             text="Admin"
             icon="admin"
@@ -43,56 +69,57 @@ export const Panel = () => {
                     link="/panel/statistic"/>
             </div>
             
-            
             <div className=" hover:bg-[#F3F4F6] hover:rounded-xl focus:bg-[#F3F4F6] focus:rounded-xl">
                 <NavItem
                 text="Settings"
                 icon="settings"
                 link="/panel/settings"/>
             </div>
-            
+
             </ul>
-            </div>
-
-            <div className="hidden lg:flex md:flex flex-col lg:w-4/5 md:w-4/5 sm:w-4/5 xs:w-4/5 bg-white shadow-md rounded-xl mr-4">
-                <div className="flex justify-between m-2">
-                <SearchForm/>
-
-                <button><DeleteIcon/></button>
-                
-                {/* {showPartnerForm ? (
-                <>
-                    <div className="form-popup">
-                        <form className="container">
-                            <h1>Добавить партнера</h1>
-                            <label htmlFor="name"><b>Название компании</b></label>
-                            <input type="text" placeholder="Введите название компании" name="name" required></input>
-
-                            <label htmlFor="OrganizationForm"><b>Форма Организации</b></label>
-                            <input type="password" placeholder="ТОО/ИП/АО" name="OrganizationForm" required></input>
-
-                            <label htmlFor="iin"><b>ИИН</b></label>
-                            <input type="number" placeholder="Введите ИИН" name="iin" required></input>
-
-                            <label htmlFor="contract"><b>Договор</b></label>
-                            <input type="file" className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-violet-50 file:text-violet-700 file:text-sm file:font-semibold hover:file:bg-violet-100"></input>
-
-                            <Button type="submit" name="Сохранить"/>
-                            <Button type="button" onClick={() => setShowModal(false)} name="Отменить"/>
-                        </form>
-                    </div>
-                </>
-                ) : null} */}
-
-                <Button icon="plus" text="Добавить партнера" onClick={()=>setShowPartnerForm(true)}/>
-                </div>
-        
-                <PartnerTable/>
-            </div>
-           
         </div>
-        </>
+        
+        <div className="text-red-600">
+            <NavItem icon="logout"/>
+        </div>
+    </div>
     )
+}
+ 
+function PartnerForm () {
+    return (
+        <div className="flex flex-col">
+            <h1>Добавить партнера</h1>
+            <div className="grid grid-cols-2 gap-4 max-w-xl m-auto">
+
+                    <div className="col-span-2 lg:col-span-1">
+                        <input type="text" placeholder="ТОО/ИП/АО" name="OrganizationForm" required></input>
+                    </div>
+
+                    <div className="col-span-2 lg:col-span-1">
+                        <input type="number" placeholder="Введите ИИН" name="iin" required></input>
+                    </div>
+                    
+                    
+                    <div className="col-span-2 lg:col-span-1"> 
+                        <input type="file" className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-violet-50 file:text-violet-700 file:text-sm file:font-semibold hover:file:bg-violet-100" placeholder="Прикерпите договор"></input>
+                    </div>
+                    
+                    <div className="col-span-2">
+                        <button type="button" className='text-left' onClick={() => setShowPartnerForm(false)}>Отменить</button>
+                        <button type="submit" className='text-right'>Сохранить</button>
+                    </div>
+
+        
+            </div>
+        </div>
+    )
+}
+
+function Input(props) {
+    <div className="col-span-2 lg:col-span-1">
+        <input type={props.type} placeholder={props.placeholder} name={props.name} required></input>
+    </div>
 }
 
 function PartnerTable () {
@@ -172,6 +199,8 @@ function NavIcon ({ name, active }) {
       StatisticIcon
     ) : name == "admin" ? (
       AdminIcon
+    ) : name == "logout" ? (
+        LogOutIcon
     ) : name == "arrow" ? (
         ArrowUpIcon
     ) : (
@@ -303,3 +332,12 @@ function DeleteIcon () {
     )
 }
 
+function LogOutIcon () {
+    return (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path 
+        fillRule="evenodd"
+        clipRule="evenodd" d="M3.8499 12C3.8499 9.99114 3.85016 8.45417 3.91129 7.26228C3.97321 6.05473 4.09496 5.30104 4.28911 4.81568C4.45852 4.39214 4.66909 4.20038 4.99548 4.07345C5.3962 3.91761 6.00375 3.84999 6.9999 3.84999C7.97371 3.84999 8.65314 3.91173 9.12801 4.01725C9.60137 4.12244 9.80439 4.25656 9.89886 4.35103C9.98311 4.43528 10.0545 4.56044 10.099 4.82723C10.1475 5.11838 10.1499 5.47843 10.1499 5.99999C10.1499 6.46944 10.5305 6.84999 10.9999 6.84999C11.4693 6.84999 11.8499 6.46944 11.8499 5.99999L11.8499 5.95742V5.95741C11.85 5.49111 11.85 4.99303 11.7758 4.54775C11.6953 4.06455 11.5167 3.56471 11.1009 3.14895C10.6954 2.74342 10.1484 2.50254 9.49679 2.35773C8.84666 2.21326 8.0261 2.14999 6.9999 2.14999C5.99606 2.14999 5.10361 2.20737 4.37932 2.48904C3.58072 2.79961 3.04128 3.35785 2.7107 4.18431C2.40484 4.94895 2.27659 5.94526 2.21352 7.17521C2.1499 8.41571 2.1499 9.99583 2.1499 11.9755V11.9757V12V12.0243V12.0245C2.1499 14.0042 2.1499 15.5843 2.21352 16.8248C2.27659 18.0547 2.40484 19.051 2.7107 19.8157C3.04128 20.6421 3.58072 21.2004 4.37932 21.5109C5.10361 21.7926 5.99606 21.85 6.9999 21.85C8.0261 21.85 8.84666 21.7867 9.49679 21.6423C10.1484 21.4974 10.6954 21.2566 11.1009 20.851C11.5167 20.4353 11.6953 19.9354 11.7758 19.4522C11.85 19.007 11.85 18.5089 11.8499 18.0426V18.0426L11.8499 18C11.8499 17.5306 11.4693 17.15 10.9999 17.15C10.5305 17.15 10.1499 17.5306 10.1499 18C10.1499 18.5216 10.1475 18.8816 10.099 19.1728C10.0545 19.4395 9.98311 19.5647 9.89886 19.649C9.80439 19.7434 9.60137 19.8775 9.12801 19.9827C8.65314 20.0883 7.97371 20.15 6.9999 20.15C6.00375 20.15 5.3962 20.0824 4.99548 19.9265C4.66909 19.7996 4.45852 19.6078 4.28911 19.1843C4.09496 18.699 3.97321 17.9453 3.91129 16.7377C3.85016 15.5458 3.8499 14.0088 3.8499 12ZM17.6009 7.39895C17.269 7.06701 16.7308 7.06701 16.3989 7.39895C16.0669 7.7309 16.0669 8.26909 16.3989 8.60103L18.9478 11.15H10.9999C10.5305 11.15 10.1499 11.5306 10.1499 12C10.1499 12.4694 10.5305 12.85 10.9999 12.85H18.9478L16.3989 15.399C16.0669 15.7309 16.0669 16.2691 16.3989 16.601C16.7308 16.933 17.269 16.933 17.6009 16.601L21.6009 12.601C21.9329 12.2691 21.9329 11.7309 21.6009 11.399L17.6009 7.39895Z" fill="#FF3B30"/>
+        </svg>
+    )
+}
