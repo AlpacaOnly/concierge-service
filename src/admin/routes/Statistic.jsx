@@ -1,3 +1,4 @@
+import {Pagination} from "../routes/Partner"
 export default () => {
     return (
         <>
@@ -11,7 +12,14 @@ export default () => {
                     <Card ClientsNumber="6563" text="Довольных клентов" icon="check"/>
                 </div>
                 <span className="font-medium text-xl my-6">Список заказов</span>
-                <OrdersTable/>
+                <div className="flex flex-col justify-between">
+                    <OrdersTable/>
+                    <div className="flex justify-center py-4">
+                        <Pagination/>
+                    </div>
+                </div>
+                
+                
             </div>
 
         </>
