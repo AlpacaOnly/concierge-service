@@ -1,13 +1,22 @@
 import {NavLink} from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export function LeftSideBar () {
     const navigate = useNavigate();
+    const [open, setOpen] = useState(false)
+
     return (
         <div
             className="list-none font-[Inter] w-full xl:w-1/5 lg:w-1/3 md:w-1/3 bg-white shadow-md rounded-xl mr-4 p-4 flex flex-col justify-between">
+            
             <div>
-                <ul
+
+            <div onClick={() =>setOpen(!open)} className="flex justify-end md:hidden cursor-pointer">
+            <NavIcon name={open ? 'close' : 'menu'}/>
+            </div>
+
+            { open ?  (<ul
                     aria-labelledby="mobileMenuToggle"
                     className="flex flex-col"
                 >
@@ -57,12 +66,14 @@ export function LeftSideBar () {
                     </div>
 
                 </ul>
+                ) : none }
             </div>
 
             <div className="text-red-600">
                 <NavItem icon="logout"/>
             </div>
         </div>
+
     );
 }
 
@@ -80,7 +91,7 @@ function NavItem(props) {
                                         isActive ? "text-emerald-700" : "text-black"
                                     }`}
                                 >{props.text}
-                </span>
+                                </span>
                             </div>
                         </>
                     )}
@@ -104,6 +115,10 @@ function NavIcon({name, active}) {
             LogOutIcon
         ) : name == "arrow" ? (
             ArrowUpIcon
+        ) : name == "menu" ? (
+            MenuIcon
+        ) : name == "close" ? (
+            CloseIcon
         ) : (
             <span/>
         );
@@ -188,5 +203,24 @@ function SettingsIcon() {
                 d="M14.1213 14.1213C14.6839 13.5587 15 12.7956 15 12C15 11.2044 14.6839 10.4413 14.1213 9.87868C13.5587 9.31607 12.7956 9 12 9C11.2044 9 10.4413 9.31607 9.87868 9.87868C9.31607 10.4413 9 11.2044 9 12C9 12.7956 9.31607 13.5587 9.87868 14.1213C10.4413 14.6839 11.2044 15 12 15C12.7956 15 13.5587 14.6839 14.1213 14.1213Z"
                 stroke="#1C274C" strokeOpacity="0.7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
+    )
+}
+
+function MenuIcon() {
+    return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M20 7L4 7" stroke="#1C274C" strokeWidth="1.5" strokeLinecap="round"/>
+    <path opacity="0.5" d="M20 12L4 12" stroke="#1C274C" strokeWidth="1.5" strokeLinecap="round"/>
+    <path d="M20 17L4 17" stroke="#1C274C" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+)
+}
+
+function CloseIcon () {
+    return (
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fillRule="evenodd" clipRule="evenodd" 
+    d="M10 20C5.28595 20 2.92893 20 1.46447 18.5355C0 17.0711 0 14.714 0 10C0 5.28595 0 2.92893 1.46447 1.46447C2.92893 0 5.28595 0 10 0C14.714 0 17.0711 0 18.5355 1.46447C20 2.92893 20 5.28595 20 10C20 14.714 20 17.0711 18.5355 18.5355C17.0711 20 14.714 20 10 20ZM6.96965 6.96967C7.26254 6.67678 7.73742 6.67678 8.03031 6.96967L9.99999 8.93935L11.9696 6.96969C12.2625 6.6768 12.7374 6.6768 13.0303 6.96969C13.3232 7.26258 13.3232 7.73746 13.0303 8.03035L11.0606 10L13.0303 11.9697C13.3232 12.2625 13.3232 12.7374 13.0303 13.0303C12.7374 13.3232 12.2625 13.3232 11.9696 13.0303L9.99999 11.0607L8.03033 13.0303C7.73744 13.3232 7.26256 13.3232 6.96967 13.0303C6.67678 12.7374 6.67678 12.2626 6.96967 11.9697L8.93933 10L6.96965 8.03033C6.67676 7.73744 6.67676 7.26256 6.96965 6.96967Z" fill="#1C274C"/>
+    </svg>
     )
 }

@@ -51,9 +51,8 @@ export const AppRoutes = () => {
             )}
             {role === roles.ADMIN && (
                 <Route path="panel" element={<AdminLayout/>}>
-                    <Route path="partner" element={<AdminPartnerLayout/>}>
-                        <Route path="add" element={<AdminAddPartnerLayout/>}/>
-                    </Route>
+                    <Route path="partner" element={<AdminPartnerLayout/>}/>
+                    <Route path="addpartner" element={<AdminAddPartnerLayout/>}/>
                     <Route path="manager" element={<AdminManagerLayot/>}/>
                     <Route path="client" element={<AdminClientLayot/>}/>
                     <Route path="statistic" element={<AdminStatisticLayout/>}/>

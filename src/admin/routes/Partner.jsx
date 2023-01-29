@@ -14,7 +14,7 @@ export default () => {
                     <SearchForm/>
 
                     <div className="flex flex-row">
-                        <Button icon="plus" text="Добавить партнера" onClick={() => navigate("/panel/add")}/>
+                        <Button icon="plus" text="Добавить партнера" onClick={() => navigate("/panel/addpartner")}/>
                     </div>
 
                 </div>
